@@ -16,10 +16,10 @@ public class Toolbar {
     public void agregarLos(List<List<ElementoDeToolbar>> elementos) {
         siNoExisteLaBarraLaGenera();
         for(List<ElementoDeToolbar> elementosASeparar : elementos) {
+            this.toolbar.addSeparator();
             for(ElementoDeToolbar elemento : elementosASeparar) {
                 this.toolbar.add(elemento.generarBotonDeToolbar());
             }
-            this.toolbar.addSeparator();
         }
     }
 

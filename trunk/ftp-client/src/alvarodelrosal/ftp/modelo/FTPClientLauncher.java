@@ -1,21 +1,15 @@
 package alvarodelrosal.ftp.modelo;
 
-import alvarodelrosal.ftp.ui.factorias.FactoriaDeToolbars;
 import alvarodelrosal.ftp.ui.VentanaPrincipal;
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
-import java.net.Socket;
-import java.net.UnknownHostException;
 
 public class FTPClientLauncher {
 
     public static void main(String[] args) throws IOException {
         VentanaPrincipal ventanaPrincipal = new VentanaPrincipal();
-        ventanaPrincipal.agregarToolbar(new FactoriaDeToolbars().obtener());
-        //ventanaPrincipal.construirTablaConScroll();
         ventanaPrincipal.crear();
+        
+        /*
         
         String host = "localhost";
         int puerto = 9999;
@@ -65,6 +59,7 @@ public class FTPClientLauncher {
         salida.println("Bye");
         System.out.println(entrada.readLine());
         
+        */
     }
     
 }
