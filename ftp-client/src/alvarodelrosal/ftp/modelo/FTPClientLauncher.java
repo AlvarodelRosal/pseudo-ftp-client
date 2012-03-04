@@ -1,31 +1,17 @@
 package alvarodelrosal.ftp.modelo;
 
-import alvarodelrosal.ftp.ui.VentanaPrincipal;
+import alvarodelrosal.ftp.ui.VentanaDeLogin;
 import java.io.IOException;
+import java.net.Socket;
 
 public class FTPClientLauncher {
 
     public static void main(String[] args) throws IOException {
-        VentanaPrincipal ventanaPrincipal = new VentanaPrincipal();
-        ventanaPrincipal.crear();
+        
+        VentanaDeLogin ventanaDeLogin = new VentanaDeLogin();
+        ventanaDeLogin.crear();
         
         /*
-        
-        String host = "localhost";
-        int puerto = 9999;
-        
-        Socket socketCliente = null;
-        try {
-            socketCliente = new Socket(host, puerto);
-        } catch (UnknownHostException ex) {
-            System.out.println("El host indicado no se puede alcanzar. Compruebe su conexion");
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
-
-        PrintWriter salida = new PrintWriter(socketCliente.getOutputStream(), true);
-        BufferedReader entrada = new BufferedReader(new InputStreamReader(socketCliente.getInputStream()));
-
         salida.println("user<:@:>user");
         System.out.println(entrada.readLine());
         

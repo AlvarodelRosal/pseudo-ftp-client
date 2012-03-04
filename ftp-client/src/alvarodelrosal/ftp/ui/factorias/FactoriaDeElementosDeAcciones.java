@@ -8,13 +8,12 @@ public class FactoriaDeElementosDeAcciones {
     
     private List<List<ElementoDeToolbar>> elementosSeparados = new ArrayList();
     
-    public FactoriaDeElementosDeAcciones() {
-        elementosSeparados.add(new FactoriaDeElementosDeConexion().obtenerLosElementos());
-        elementosSeparados.add(new FactoriaDeElementosDeCarpeta().obtenerLosElementos());
-        elementosSeparados.add(new FactoriaDeElementosDeTransmision().obtenerLosElementos());
-        elementosSeparados.add(new FactoriaDeElementosDeArchivo().obtenerLosElementos());
-        elementosSeparados.add(new FactoriaDeElementosDeAdmin().obtenerLosElementos());
-        
+    public FactoriaDeElementosDeAcciones(Conexion conexion) {
+        elementosSeparados.add(new FactoriaDeElementosDeConexion(conexion).obtenerLosElementos());
+        elementosSeparados.add(new FactoriaDeElementosDeCarpeta(conexion).obtenerLosElementos());
+        elementosSeparados.add(new FactoriaDeElementosDeTransmision(conexion).obtenerLosElementos());
+        elementosSeparados.add(new FactoriaDeElementosDeArchivo(conexion).obtenerLosElementos());
+        elementosSeparados.add(new FactoriaDeElementosDeAdmin(conexion).obtenerLosElementos());
     }
     
     public List<List<ElementoDeToolbar>> obtenerLosElementos() {

@@ -1,5 +1,7 @@
 package alvarodelrosal.ftp.ui.factorias;
 
+import alvarodelrosal.ftp.infraestructura.FTPBye;
+import alvarodelrosal.ftp.modelo.Conexion;
 import alvarodelrosal.ftp.ui.ElementoDeToolbar;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -9,8 +11,10 @@ import java.util.List;
 public class FactoriaDeElementosDeConexion implements FactoriaDeElementosSeparados{
 
     private List<ElementoDeToolbar> elementos = new ArrayList();
+    private Conexion conexion;
     
-    public FactoriaDeElementosDeConexion() {
+    public FactoriaDeElementosDeConexion(Conexion conexion) {
+        this.conexion = conexion;
         ElementoDeToolbar conectar = new ElementoDeToolbar("Iniciar conexión",
                 "control-power");
         conectar.agregarActionListener(new ActionListenerDeConectar());
@@ -25,7 +29,9 @@ public class FactoriaDeElementosDeConexion implements FactoriaDeElementosSeparad
 
         @Override
         public void actionPerformed(ActionEvent ae) {
-            System.out.println("Abre la ventana de Login");
+            FTPBye bye = new FTPBye();
+            bye.cerrar(conexion);
+            System.exit(0);
         }
 
     }
