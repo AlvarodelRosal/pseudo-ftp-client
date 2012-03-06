@@ -1,5 +1,6 @@
 package alvarodelrosal.ftp.ui;
 
+import alvarodelrosal.ftp.infraestructura.FTPBye;
 import alvarodelrosal.ftp.infraestructura.RepositorioDePaths;
 import alvarodelrosal.ftp.modelo.Conexion;
 import alvarodelrosal.ftp.ui.factorias.FactoriaDeToolbars;
@@ -7,16 +8,16 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.HeadlessException;
 import java.awt.Toolkit;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JScrollPane;
-import javax.swing.JToolBar;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
+import javax.swing.*;
 
 public class VentanaPrincipal extends Ventana {
 
     private JFrame ventanaPrincipal;
     private JToolBar barraDeHerramientas;
     private JScrollPane tablaConScroll;
+    private JTable tabla;
     private JLabel statusBar;
     
     private Conexion conexion;
@@ -28,6 +29,7 @@ public class VentanaPrincipal extends Ventana {
         this.ventanaPrincipal = null;
         this.barraDeHerramientas = null;
         this.tablaConScroll = null;
+        this.tabla = null;
         this.statusBar = null;
         this.conexion = conexion;
     }
@@ -47,10 +49,10 @@ public class VentanaPrincipal extends Ventana {
     }
 
     private void agregaContenido() {
-        agregarToolbar(new FactoriaDeToolbars(conexion).obtener());
+        agregarToolbar(new FactoriaDeToolbars(this).obtener());
         construirTablaConScroll(new TablaConScroll(
                 new modeloDeTablaDeArchivos(
-                new RepositorioDePaths(conexion))).obtener());
+                new RepositorioDePaths(), "/", conexion),this));
     }
 
     public void agregarToolbar(Toolbar toolbar) {
@@ -114,8 +116,9 @@ public class VentanaPrincipal extends Ventana {
         ventanaPrincipal.setLocation((size.width - ventanaPrincipal.getWidth())/2,
                 (size.height - ventanaPrincipal.getHeight())/2);
         
-        this.ventanaPrincipal.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.ventanaPrincipal.getContentPane().setLayout(new BorderLayout());
+        
+        this.ventanaPrincipal.addWindowListener(new WindowListenerDeCerrar());
     }
 
     private boolean laVentanaNoExiste() {
@@ -127,7 +130,45 @@ public class VentanaPrincipal extends Ventana {
         this.ventanaPrincipal.setVisible(true);
     }
 
-    public void construirTablaConScroll(JScrollPane tablaConScroll) {
-        this.tablaConScroll = tablaConScroll;
+    public void construirTablaConScroll(TablaConScroll tablaConScroll) {
+        this.tablaConScroll = tablaConScroll.obtener();
+        this.tabla = tablaConScroll.obtenerTabla();
+    }
+    
+    public Conexion obtenerLaConexion() {
+        return this.conexion;
+    }
+    
+    public JTable obtenerTabla() {
+        return this.tabla;
+    }
+    
+    class WindowListenerDeCerrar implements WindowListener {
+
+        @Override
+        public void windowOpened(WindowEvent we) {}
+
+        @Override
+        public void windowClosing(WindowEvent we) {
+            FTPBye bye = new FTPBye();
+            bye.cerrar(conexion);
+            System.exit(0);
+        }
+
+        @Override
+        public void windowClosed(WindowEvent we) {}
+
+        @Override
+        public void windowIconified(WindowEvent we) {}
+
+        @Override
+        public void windowDeiconified(WindowEvent we) {}
+
+        @Override
+        public void windowActivated(WindowEvent we) {}
+
+        @Override
+        public void windowDeactivated(WindowEvent we) {}
+
     }
 }

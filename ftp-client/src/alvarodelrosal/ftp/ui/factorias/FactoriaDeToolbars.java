@@ -1,20 +1,20 @@
 package alvarodelrosal.ftp.ui.factorias;
 
-import alvarodelrosal.ftp.modelo.Conexion;
 import alvarodelrosal.ftp.ui.Toolbar;
+import alvarodelrosal.ftp.ui.VentanaPrincipal;
 
 public class FactoriaDeToolbars {
 
-    private Conexion conexion;
+    private VentanaPrincipal ventana;
 
-    public FactoriaDeToolbars(Conexion conexion) {
-        this.conexion = conexion;
+    public FactoriaDeToolbars(VentanaPrincipal ventana) {
+        this.ventana = ventana;
     }
     
     public Toolbar obtener() {
         
         Toolbar acciones = new Toolbar("Acciones");
-        acciones.agregarLos(new FactoriaDeElementosDeAcciones(conexion).obtenerLosElementos());
+        acciones.agregarLos(new FactoriaDeElementosDeAcciones(ventana).obtenerLosElementos());
         
         return acciones;
     }
