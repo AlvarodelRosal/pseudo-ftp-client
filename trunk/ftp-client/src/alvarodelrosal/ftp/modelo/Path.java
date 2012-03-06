@@ -84,8 +84,7 @@ public class Path {
                 tamano = tamano/1024;
                 unidad++;
             }
-            
-            return String.valueOf(tamano).substring(0, 6) + " " + unidades[unidad];
+            return String.valueOf(tamano) + " " + unidades[unidad];
         }
     }
     

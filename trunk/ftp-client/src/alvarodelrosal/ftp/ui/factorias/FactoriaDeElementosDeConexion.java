@@ -3,6 +3,7 @@ package alvarodelrosal.ftp.ui.factorias;
 import alvarodelrosal.ftp.infraestructura.FTPBye;
 import alvarodelrosal.ftp.modelo.Conexion;
 import alvarodelrosal.ftp.ui.ElementoDeToolbar;
+import alvarodelrosal.ftp.ui.VentanaPrincipal;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -13,9 +14,9 @@ public class FactoriaDeElementosDeConexion implements FactoriaDeElementosSeparad
     private List<ElementoDeToolbar> elementos = new ArrayList();
     private Conexion conexion;
     
-    public FactoriaDeElementosDeConexion(Conexion conexion) {
-        this.conexion = conexion;
-        ElementoDeToolbar conectar = new ElementoDeToolbar("Iniciar conexión",
+    public FactoriaDeElementosDeConexion(VentanaPrincipal ventana) {
+        this.conexion = ventana.obtenerLaConexion();
+        ElementoDeToolbar conectar = new ElementoDeToolbar("Cerrar conexión",
                 "control-power");
         conectar.agregarActionListener(new ActionListenerDeConectar());
         elementos.add(conectar);

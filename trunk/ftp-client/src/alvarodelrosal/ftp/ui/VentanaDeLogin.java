@@ -51,35 +51,41 @@ public class VentanaDeLogin extends Ventana {
             campoPuerto = crearCampo(3);
             ventanaDeLogin.add(campoPuerto);
 
-            JButton conectar = new JButton("Conectar");
-            conectar.setBounds(170, 130, 100, 30);
-            conectar.addActionListener(new ActionListener() {
+            ventanaDeLogin.add(botonDeConectar());
 
-                @Override
-                public void actionPerformed(ActionEvent ae) {
-                    int puerto = new Integer(campoPuerto.getText());
-
-                    Conexion conexion = new Conexion(campoHost.getText(), puerto);
-                    FTPLogin login = new FTPLogin();
-                    if (login.existe(campoUsuario.getText(), campoClave.getText(), conexion)) {
-                        List<String> parametros = login.obtenerDatos();
-                        VentanaPrincipal ventanaPrincipal = new VentanaPrincipal(conexion);
-                        ventanaPrincipal.establecerNombre(parametros.get(0));
-                        ventanaPrincipal.establecerAdministrador(Boolean.valueOf(parametros.get(1)));
-                        
-                        ventanaPrincipal.crear();
-                    }
-                }
-            });
-
-            ventanaDeLogin.add(conectar);
-
-            JButton salir = botonDeSalir();
-            ventanaDeLogin.add(salir);
+            ventanaDeLogin.add(botonDeSalir());
 
             ventanaDeLogin.setResizable(false);
             ventanaDeLogin.setVisible(true);
         }
+    }
+
+    private JButton botonDeConectar() {
+        JButton conectar = new JButton("Conectar");
+        conectar.setBounds(170, 130, 100, 30);
+        conectar.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                int puerto = new Integer(campoPuerto.getText());
+
+                Conexion conexion = new Conexion(campoHost.getText(), puerto);
+                FTPLogin login = new FTPLogin();
+                if (login.existe(campoUsuario.getText(), campoClave.getText(), conexion)) {
+                    List<String> parametros = login.obtenerDatos();
+                    VentanaPrincipal ventanaPrincipal = new VentanaPrincipal(conexion);
+                    ventanaPrincipal.establecerNombre(parametros.get(0));
+                    ventanaPrincipal.establecerAdministrador(Boolean.valueOf(parametros.get(1)));
+                    
+                    ventanaDeLogin.setVisible(false);
+                    ventanaPrincipal.crear();
+                } else {
+                    Dialogo.pintarMensajeDeWarning("Datos incorrectos",
+                            "Datos de conexión incorrectos.\nPor favor, revíselos.");
+                }
+            }
+        });
+        return conectar;
     }
 
     private JButton botonDeSalir() {
