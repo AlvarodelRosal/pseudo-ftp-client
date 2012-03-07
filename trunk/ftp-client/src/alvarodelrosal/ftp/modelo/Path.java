@@ -56,6 +56,14 @@ public class Path {
         return path;
     }
     
+    public String verPathCompleto() {
+        String direccion = path + nombre;
+        if (esUnaCarpeta) {
+            direccion += "/";
+        }
+        return direccion;
+    }
+    
     public String ultimaModificacion() {
         return ultimaModificacion;
     }

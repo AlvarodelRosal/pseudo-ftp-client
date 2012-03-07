@@ -3,42 +3,26 @@ package alvarodelrosal.ftp.ui;
 import java.util.List;
 import javax.swing.JToolBar;
 
-public class Toolbar {
-
-    private String nombre;
+public class Toolbar extends ElementoDeVentana {
+    
     private JToolBar toolbar;
-
-    public Toolbar(String nombre) {
-        this.nombre = nombre;
-        this.toolbar = null;
+    
+    public Toolbar(String titulo) {
+        toolbar = new JToolBar(titulo);
     }
     
-    public void agregarLos(List<List<ElementoDeToolbar>> elementos) {
-        siNoExisteLaBarraLaGenera();
-        for(List<ElementoDeToolbar> elementosASeparar : elementos) {
-            this.toolbar.addSeparator();
-            for(ElementoDeToolbar elemento : elementosASeparar) {
-                this.toolbar.add(elemento.generarBotonDeToolbar());
+    public void agregarElementos(List<ElementoDeToolbar> elementos) {
+        for (ElementoDeToolbar elemento : elementos) {
+            if (elemento.esUnSeparador()) {
+                toolbar.addSeparator();
+            } else {
+                toolbar.add(elemento.obtenerElemento());
             }
         }
     }
-
-    private void siNoExisteLaBarraLaGenera() {
-        if (noExisteLaBarra()) {
-            this.toolbar = new JToolBar(nombre);
-        }
-    }
-
-    private boolean noExisteLaBarra() {
-        return this.toolbar == null;
-    }
-
-    public JToolBar generarToolbar() {
-        return this.toolbar;
-    }
     
-    public String obtenerNombre() {
-        return this.nombre;
+    public JToolBar generarToolbar() {
+        return toolbar;
     }
     
 }

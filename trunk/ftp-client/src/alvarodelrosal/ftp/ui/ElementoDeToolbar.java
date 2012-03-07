@@ -5,46 +5,44 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 
 public class ElementoDeToolbar {
-    
-    private final String nombre;
-    private final String nombreDelIcono;
-    private ActionListener actionListener;
 
-    public ElementoDeToolbar(String nombre, String nombreDelIcono) {
-        this.nombre = nombre;
-        this.nombreDelIcono = nombreDelIcono;
-        this.actionListener = null;
-    }
+    private String descripcion;
+    private String icono;
+    private JButton boton;
 
-    public void agregarActionListener (ActionListener actionListener) {
-        this.actionListener = actionListener;
-    }
-    
-    public JButton generarBotonDeToolbar() {
-        JButton boton = generaElBotonConIcono();
-        agregaAyudaAlBoton(boton);
-        siTieneActionListenerLoAgrega(boton);
-        
-        return boton;
-    }
+    public ElementoDeToolbar(String descripcion, String icono) {
+        this.descripcion = descripcion;
+        this.icono = icono;
 
-    private void agregaAyudaAlBoton(JButton boton) {
-        boton.setToolTipText(this.nombre);
-    }
-
-    private JButton generaElBotonConIcono() {
-        JButton boton = new JButton(new ImageIcon(getClass().
-                getResource("/iconos/" + this.nombreDelIcono + ".png")));
-        return boton;
-    }
-
-    private void siTieneActionListenerLoAgrega(JButton boton) {
-        if (tieneActionListener()) {
-            boton.addActionListener(this.actionListener);
+        if ("Separador".equals(icono)) {
+            boton = null;
+        } else {
+            boton = new JButton(new ImageIcon(getClass().getResource("/iconos/" + icono + ".png")));
+            boton.setToolTipText(descripcion);
         }
     }
 
-    private boolean tieneActionListener() {
-        return this.actionListener != null;
+    public void agregarActionListener(ActionListener listener) {
+        boton.addActionListener(listener);
+    }
+
+    public String verDescripcion() {
+        return descripcion;
+    }
+
+    public String verIcono() {
+        return icono;
+    }
+
+    public boolean esUnSeparador() {
+        return "Separador".equals(descripcion) || "Separador".equals(icono);
+    }
+
+    public JButton obtenerElemento() {
+        if (esUnSeparador()) {
+            return null;
+        } else {
+            return boton;
+        }
     }
 }
