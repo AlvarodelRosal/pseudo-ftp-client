@@ -1,16 +1,15 @@
 package alvarodelrosal.ftp.ui;
 
-import alvarodelrosal.ftp.infraestructura.FTPLogin;
+import alvarodelrosal.ftp.modelo.Usuario;
+import alvarodelrosal.ftp.modelo.Acciones.FTPLogin;
 import alvarodelrosal.ftp.modelo.Conexion;
 import java.awt.Dimension;
 import java.awt.HeadlessException;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.*;
 
 public class VentanaDeLogin extends Ventana {
@@ -34,21 +33,25 @@ public class VentanaDeLogin extends Ventana {
             JLabel etiquetaUsuario = crearEtiqueta("Nombre de usuario:", 0);
             ventanaDeLogin.add(etiquetaUsuario);
             campoUsuario = crearCampo(0);
+            campoUsuario.setText("adr");
             ventanaDeLogin.add(campoUsuario);
 
             JLabel etiquetaClave = crearEtiqueta("Contraseña:", 1);
             ventanaDeLogin.add(etiquetaClave);
             campoClave = crearCampoClave(1);
+            campoClave.setText("123456");
             ventanaDeLogin.add(campoClave);
 
             JLabel etiquetaHost = crearEtiqueta("Host:", 2);
             ventanaDeLogin.add(etiquetaHost);
             campoHost = crearCampo(2);
+            campoHost.setText("localhost");
             ventanaDeLogin.add(campoHost);
 
             JLabel etiquetaPuerto = crearEtiqueta("Puerto:", 3);
             ventanaDeLogin.add(etiquetaPuerto);
             campoPuerto = crearCampo(3);
+            campoPuerto.setText("9999");
             ventanaDeLogin.add(campoPuerto);
 
             ventanaDeLogin.add(botonDeConectar());
@@ -70,19 +73,26 @@ public class VentanaDeLogin extends Ventana {
                 int puerto = new Integer(campoPuerto.getText());
 
                 Conexion conexion = new Conexion(campoHost.getText(), puerto);
-                FTPLogin login = new FTPLogin();
-                if (login.existe(campoUsuario.getText(), campoClave.getText(), conexion)) {
-                    List<String> parametros = login.obtenerDatos();
-                    VentanaPrincipal ventanaPrincipal = new VentanaPrincipal(conexion);
-                    ventanaPrincipal.establecerNombre(parametros.get(0));
-                    ventanaPrincipal.establecerAdministrador(Boolean.valueOf(parametros.get(1)));
-                    
+                FTPLogin login = new FTPLogin(conexion);
+                List<String> parametrosDeLogin = new ArrayList();
+                parametrosDeLogin.add(campoUsuario.getText());
+                parametrosDeLogin.add(campoClave.getText());
+                
+                login.ejecutar(parametrosDeLogin);
+                Usuario usuario = (Usuario) login.respuestaEnObjeto();
+                
+                if (existeEl(usuario)) {
+                    VentanaPrincipal ventanaPrincipal = new VentanaPrincipal(conexion, usuario);
                     ventanaDeLogin.setVisible(false);
-                    ventanaPrincipal.crear();
+                    ventanaPrincipal.generar();
                 } else {
-                    Dialogo.pintarMensajeDeWarning("Datos incorrectos",
+                    Dialogo.pintarMensajeDeError("Datos incorrectos",
                             "Datos de conexión incorrectos.\nPor favor, revíselos.");
                 }
+            };
+
+            private boolean existeEl(Usuario usuario) {
+                return usuario != null;
             }
         });
         return conectar;

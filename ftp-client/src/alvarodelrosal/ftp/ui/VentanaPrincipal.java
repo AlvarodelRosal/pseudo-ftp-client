@@ -1,8 +1,10 @@
 package alvarodelrosal.ftp.ui;
 
-import alvarodelrosal.ftp.infraestructura.FTPBye;
-import alvarodelrosal.ftp.infraestructura.RepositorioDePaths;
+import alvarodelrosal.ftp.modelo.RepositorioDePaths;
+import alvarodelrosal.ftp.modelo.Acciones.FTPBye;
 import alvarodelrosal.ftp.modelo.Conexion;
+import alvarodelrosal.ftp.modelo.Path;
+import alvarodelrosal.ftp.modelo.Usuario;
 import alvarodelrosal.ftp.ui.factorias.FactoriaDeToolbars;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -10,148 +12,105 @@ import java.awt.HeadlessException;
 import java.awt.Toolkit;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
-import javax.swing.*;
+import java.util.ArrayList;
+import javax.swing.JFrame;
 
 public class VentanaPrincipal extends Ventana {
 
     private JFrame ventanaPrincipal;
-    private JToolBar barraDeHerramientas;
-    private JScrollPane tablaConScroll;
-    private JTable tabla;
-    private JLabel statusBar;
+    private Toolbar toolbar;
+    private TablaConScroll tabla;
+    private Statusbar statusbar;
     
     private Conexion conexion;
-    
-    private String nombre;
-    private boolean isAdmin;
+    private Usuario usuario;
 
-    public VentanaPrincipal(Conexion conexion) {
-        this.ventanaPrincipal = null;
-        this.barraDeHerramientas = null;
-        this.tablaConScroll = null;
-        this.tabla = null;
-        this.statusBar = null;
+    public VentanaPrincipal(Conexion conexion, Usuario usuario) {
         this.conexion = conexion;
-    }
-
-    public void crear() {
-        this.agregaContenido();
-        this.crearVentanaPrincipal();
-        this.actualizarContenido();
-    }
-    
-    public void establecerNombre(String nombre) {
-        this.nombre = nombre;
-    }
-    
-    public void establecerAdministrador(boolean isAdmin) {
-        this.isAdmin = isAdmin;
-    }
-
-    private void agregaContenido() {
+        this.usuario = usuario;
+        pregeneraLaVentana();
+        
         agregarToolbar(new FactoriaDeToolbars(this).obtener());
-        construirTablaConScroll(new TablaConScroll(
-                new modeloDeTablaDeArchivos(
-                new RepositorioDePaths(), "/", conexion),this));
+        agregarTabla(new TablaConScroll(
+                new ModeloDeTablaDeArchivos(new RepositorioDePaths(),
+                new Path("/", ""), conexion)));
+        agregarStatusbar(new Statusbar());
     }
-
-    public void agregarToolbar(Toolbar toolbar) {
-        barraDeHerramientas = toolbar.generarToolbar();
+    
+    private void agregarToolbar(Toolbar toolbar) {
+        this.toolbar = toolbar;
+        ventanaPrincipal.getContentPane().add(this.toolbar.generarToolbar(),
+                BorderLayout.NORTH);
     }
-
-    private void crearVentanaPrincipal() {
-        cargaLaVentana();
-        cargaElToolbar();
-        cargaLaTable();
-        if(hayQueCrearElStatusBar()) {
-            String contenido = " " + nombre;
-            if (isAdmin) {
-                contenido += " - administrador";
-            }
-            statusBar = new JLabel(contenido);
-            this.ventanaPrincipal.getContentPane().add(statusBar,
-                    BorderLayout.SOUTH);
-        }
+    
+    private void agregarStatusbar(Statusbar statusbar) {
+        this.statusbar = statusbar;
+        ventanaPrincipal.getContentPane().add(this.statusbar.obtenerElemento(),
+                BorderLayout.SOUTH);
     }
-
-    private boolean hayQueCrearElStatusBar() {
-        return statusBar == null;
+    
+    private void agregarTabla(TablaConScroll tabla) {
+        this.tabla = tabla;
+        ventanaPrincipal.getContentPane().add(this.tabla.obtenerTabla(),
+                BorderLayout.CENTER);
     }
-
-    private void cargaLaVentana() throws HeadlessException {
-        if (laVentanaNoExiste()) {
-            cargaLosParametrosDeLaVentana();
-        }
-    }
-
-    private void cargaLaTable() {
-        if(existeLaTabla()) {
-            this.ventanaPrincipal.getContentPane().
-                    add(tablaConScroll,BorderLayout.CENTER);
-        }
-    }
-
-    private void cargaElToolbar() {
-        if(existeElToolbar()) {
-            this.ventanaPrincipal.getContentPane().
-                    add(barraDeHerramientas,BorderLayout.NORTH);
-        }
-    }
-
-    private boolean existeLaTabla() {
-        return tablaConScroll != null;
-    }
-
-    private boolean existeElToolbar() {
-        return barraDeHerramientas != null;
-    }
-
-    private void cargaLosParametrosDeLaVentana() throws HeadlessException {
-        this.ventanaPrincipal = new JFrame();
-        this.ventanaPrincipal.setTitle("miniFTP - Alvaro del Rosal");
-        this.ventanaPrincipal.setSize(800, 600);
-        
-        Toolkit toolkit = ventanaPrincipal.getToolkit();
-        Dimension size = toolkit.getScreenSize();
-        ventanaPrincipal.setLocation((size.width - ventanaPrincipal.getWidth())/2,
-                (size.height - ventanaPrincipal.getHeight())/2);
-        
-        this.ventanaPrincipal.getContentPane().setLayout(new BorderLayout());
-        
-        this.ventanaPrincipal.addWindowListener(new WindowListenerDeCerrar());
-    }
-
-    private boolean laVentanaNoExiste() {
-        return ventanaPrincipal == null;
-    }
-
-    private void actualizarContenido() {
-        this.ventanaPrincipal.setVisible(false);
-        this.ventanaPrincipal.setVisible(true);
-    }
-
-    public void construirTablaConScroll(TablaConScroll tablaConScroll) {
-        this.tablaConScroll = tablaConScroll.obtener();
-        this.tabla = tablaConScroll.obtenerTabla();
+    
+    public Usuario obtenerElUsuario() {
+        return usuario;
     }
     
     public Conexion obtenerLaConexion() {
-        return this.conexion;
+        return conexion;
     }
     
-    public JTable obtenerTabla() {
-        return this.tabla;
+    public void generar() {
+        String contenidoDeStatusbar = " " + usuario.verNombre();
+        if (usuario.esAdmin()) {
+            contenidoDeStatusbar += " - Administrador";
+        }
+        statusbar.cambiarTexto(contenidoDeStatusbar);
+        
+        ventanaPrincipal.setVisible(false);
+        ventanaPrincipal.setVisible(true);
     }
     
-    class WindowListenerDeCerrar implements WindowListener {
+    private void pregeneraLaVentana() throws HeadlessException {
+        estableceElTituloDeLaVentana();
+        estableceDimensionesDeLaVentana();
+        centraLaVentana();
+        estableceElLayout();
+        ventanaPrincipal.addWindowListener(
+                new ListenerParaCerarLaConexionCuandoCierraLaVentana());
+    }
+
+    private void estableceElTituloDeLaVentana() throws HeadlessException {
+        ventanaPrincipal = new JFrame("miniFTP - Alvaro del Rosal");
+    }
+
+    private void estableceElLayout() {
+        ventanaPrincipal.setLayout(new BorderLayout());
+    }
+
+    private void centraLaVentana() throws HeadlessException {
+        Toolkit toolkit = ventanaPrincipal.getToolkit();
+        Dimension size = toolkit.getScreenSize();
+        ventanaPrincipal.setLocation((size.width - ventanaPrincipal.getWidth()) / 2,
+                (size.height - ventanaPrincipal.getHeight()) / 2);
+    }
+
+    private void estableceDimensionesDeLaVentana() {
+        ventanaPrincipal.setSize(800, 600);
+    }
+
+    class ListenerParaCerarLaConexionCuandoCierraLaVentana implements WindowListener {
 
         @Override
         public void windowOpened(WindowEvent we) {}
 
         @Override
         public void windowClosing(WindowEvent we) {
-            FTPBye bye = new FTPBye();
-            bye.cerrar(conexion);
+            FTPBye bye = new FTPBye(conexion);
+            bye.ejecutar(new ArrayList());
             System.exit(0);
         }
 
@@ -169,6 +128,6 @@ public class VentanaPrincipal extends Ventana {
 
         @Override
         public void windowDeactivated(WindowEvent we) {}
-
     }
+    
 }

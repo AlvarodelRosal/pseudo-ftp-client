@@ -43,15 +43,13 @@ public class Conexion {
     }
     
     public void escribir(String cadena) {
-        System.out.println("SALIDA:");
-        System.out.println(cadena);
+        //System.out.println("SALIDA: " + cadena);
         salida.println(cadena);
     }
     
     public String leer() throws IOException {
         String lectura = entrada.readLine();
-        System.out.println("ENTRADA:");
-        System.out.println(lectura);
+        //System.out.println("ENTRADA: " +lectura);
         return lectura;
     }
     
