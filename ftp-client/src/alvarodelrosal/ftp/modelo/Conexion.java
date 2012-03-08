@@ -1,5 +1,6 @@
 package alvarodelrosal.ftp.modelo;
 
+import alvarodelrosal.ftp.ui.Dialogo;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -17,9 +18,11 @@ public class Conexion {
         try {
             socketCliente = new Socket(host, puerto);
         } catch (UnknownHostException ex) {
-            System.out.println("El host indicado no se puede alcanzar. Compruebe su conexion");
+            Dialogo.pintarMensajeDeError("Error de conexión",
+                    "El host indicado no se puede alcanzar. Compruebe su conexion.");
         } catch (IOException ex) {
-            ex.printStackTrace();
+            Dialogo.pintarMensajeDeError("Error de conexión",
+                    "El host indicado no se puede alcanzar. Compruebe que el servidor está iniciado.");
         }
         try {
             salida = new PrintWriter(socketCliente.getOutputStream(), true);
