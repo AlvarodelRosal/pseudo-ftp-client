@@ -3,6 +3,7 @@ package alvarodelrosal.ftp.ui;
 import alvarodelrosal.ftp.modelo.Conexion;
 import alvarodelrosal.ftp.modelo.Path;
 import alvarodelrosal.ftp.modelo.RepositorioDePaths;
+import java.util.ArrayList;
 import java.util.List;
 import javax.swing.table.AbstractTableModel;
 
@@ -64,7 +65,14 @@ public class ModeloDeTablaDeArchivos extends AbstractTableModel {
 
     public void actualizar(String path) {
         elementos = repositorioDePaths.obtenerLosPathDe(path, conexion);
+        if(laCarpetaEstaVacia()) {
+            elementos = new ArrayList();
+        }
         fireTableDataChanged();
+    }
+
+    private boolean laCarpetaEstaVacia() {
+        return " ".equals(elementoEn(0).verNombre());
     }
 
     public Path elementoEn(int fila) {
