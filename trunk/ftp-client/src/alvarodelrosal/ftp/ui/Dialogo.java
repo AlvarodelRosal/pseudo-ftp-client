@@ -8,4 +8,7 @@ public class Dialogo {
         JOptionPane.showMessageDialog(null, cuerpo, titulo, JOptionPane.ERROR_MESSAGE);
     }
     
+    public static String pintarCuadroDeDialogo(String titulo, String mensaje) {
+            return (String)JOptionPane.showInputDialog(null,mensaje,titulo,JOptionPane.PLAIN_MESSAGE);
+    }
 }

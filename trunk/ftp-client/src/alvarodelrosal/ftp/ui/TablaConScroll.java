@@ -27,35 +27,74 @@ public class TablaConScroll extends ElementoDeVentana {
         contenedorDeTabla = new JPanel(new BorderLayout());
 
         contenedorDeTabla.add(panelDeScroll, BorderLayout.CENTER);
-        
+
         contenedorDeTabla.add(mensajes, BorderLayout.NORTH);
         mensajes.setVisible(false);
-        
+
         tabla.addMouseListener(new ListenerDeDobleClick());
     }
 
     public JPanel obtenerTabla() {
         return contenedorDeTabla;
     }
+    
+    public Path pathSeleccionado() {
+        return modelo.elementoEn(tabla.getSelectedRow());
+    }
+    
+    public Path pathActual() {
+        return pathActual;
+    }
+    
+    public void irAlPath(Path path) {
+        this.pathActual = path;
+        modelo.actualizar(path.verPathCompleto());
+        mensajes.setVisible(false);
+    }
 
+    public void generarMensajeDeErrorDeFicheros(String mensaje) {
+        contenedorDeTabla.setBackground(Color.ORANGE);
+                mensajes.setText(mensaje);
+                mensajes.setVisible(true);
+    }
+    
     class ListenerDeDobleClick implements MouseListener {
 
         @Override
         public void mouseClicked(MouseEvent me) {
+            Path pathObjetivo = pathSeleccionado();
 
             if (me.getClickCount() % 2 == 0) {
-                Path pathObjetivo = modelo.elementoEn(tabla.getSelectedRow());
-                muestraSiEsLegibleYSiNoMuestraUnMensajeDeError(pathObjetivo);
+                if (laCarpetaEsLegibleYEsCarpeta(pathObjetivo)) {
+                    mostrarCarpeta(pathObjetivo);
+                } else {
+                    muestraSiEsUnaCarpetaSiEsUnArchivoDaUnMensajeDeError(pathObjetivo);
+                    muestraSiEsLegibleYSiNoMuestraUnMensajeDeError(pathObjetivo);
+                }
             }
-
         }
 
+        private boolean laCarpetaEsLegibleYEsCarpeta(Path pathObjetivo) {
+            return pathObjetivo.esLegible() && pathObjetivo.esUnaCarpeta();
+        }
+
+        private void muestraSiEsUnaCarpetaSiEsUnArchivoDaUnMensajeDeError(Path pathObjetivo) {
+            if (!pathObjetivo.esUnaCarpeta()) {
+                contenedorDeTabla.setBackground(Color.ORANGE);
+                mensajes.setText("Para descargar un archivo, utilice la barra de herramientas");
+                mensajes.setVisible(true);
+            }
+        }
+
+        private void mostrarCarpeta(Path pathObjetivo) {
+            irAlPath(pathObjetivo);
+            mensajes.setVisible(false);
+        }
+        
+
         private void muestraSiEsLegibleYSiNoMuestraUnMensajeDeError(Path pathObjetivo) {
-            if (pathObjetivo.esLegible()) {
-                modelo.actualizar(pathObjetivo.verPathCompleto());
-                mensajes.setVisible(false);
-            } else {
-                mensajes.setBackground(Color.ORANGE);
+            if (!pathObjetivo.esLegible()) {
+                contenedorDeTabla.setBackground(Color.ORANGE);
                 mensajes.setText("No tiene privilegios de lectura para ese directorio");
                 mensajes.setVisible(true);
             }

@@ -64,6 +64,10 @@ public class Path {
         return direccion;
     }
     
+    public boolean esUnaCarpeta() {
+        return esUnaCarpeta;
+    }
+    
     public String ultimaModificacion() {
         return ultimaModificacion;
     }
