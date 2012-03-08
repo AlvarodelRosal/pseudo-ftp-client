@@ -1,8 +1,6 @@
 package alvarodelrosal.ftp.modelo;
 
 import alvarodelrosal.ftp.modelo.Acciones.*;
-import alvarodelrosal.ftp.modelo.Conexion;
-import alvarodelrosal.ftp.modelo.Path;
 import java.util.ArrayList;
 import java.util.List;
 

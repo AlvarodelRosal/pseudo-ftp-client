@@ -1,9 +1,9 @@
 package alvarodelrosal.ftp.ui;
 
-import alvarodelrosal.ftp.modelo.RepositorioDePaths;
 import alvarodelrosal.ftp.modelo.Acciones.FTPBye;
 import alvarodelrosal.ftp.modelo.Conexion;
 import alvarodelrosal.ftp.modelo.Path;
+import alvarodelrosal.ftp.modelo.RepositorioDePaths;
 import alvarodelrosal.ftp.modelo.Usuario;
 import alvarodelrosal.ftp.ui.factorias.FactoriaDeToolbars;
 import java.awt.BorderLayout;
@@ -34,6 +34,7 @@ public class VentanaPrincipal extends Ventana {
         agregarTabla(new TablaConScroll(
                 new ModeloDeTablaDeArchivos(new RepositorioDePaths(),
                 new Path("/", ""), conexion)));
+        this.irAlPath("/");
         agregarStatusbar(new Statusbar());
     }
     
@@ -72,6 +73,23 @@ public class VentanaPrincipal extends Ventana {
         
         ventanaPrincipal.setVisible(false);
         ventanaPrincipal.setVisible(true);
+    }
+    
+    public Path pathActual() {
+        return tabla.pathActual();
+    }
+    
+    public Path pathSeleccionado() {
+        return tabla.pathSeleccionado();
+    }
+    
+    public void irAlPath(String path) {
+        Path pathObjetivo = new Path(path, "");
+        tabla.irAlPath(pathObjetivo);
+    }
+    
+    public void agregarMensajeDeError(String mensaje) {
+        tabla.generarMensajeDeErrorDeFicheros(mensaje);
     }
     
     private void pregeneraLaVentana() throws HeadlessException {
