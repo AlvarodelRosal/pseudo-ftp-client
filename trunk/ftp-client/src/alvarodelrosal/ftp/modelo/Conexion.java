@@ -1,6 +1,6 @@
 package alvarodelrosal.ftp.modelo;
 
-import alvarodelrosal.ftp.ui.Dialogo;
+import alvarodelrosal.ftp.ui.ventanas.Dialogo;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;

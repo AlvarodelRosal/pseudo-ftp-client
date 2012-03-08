@@ -8,12 +8,12 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class FTPNewFolder implements FTPAction {
+public class FTPDelete implements FTPAction {
     
     private String entrada;
     private Conexion conexion;
     
-    public FTPNewFolder(Conexion conexion) {
+    public FTPDelete(Conexion conexion) {
         this.conexion = conexion;
     }
 
@@ -29,12 +29,12 @@ public class FTPNewFolder implements FTPAction {
 
     @Override
     public String verNombre() {
-        return "NewFolder";
+        return "Delete";
     }
 
     @Override
     public void ejecutar(List<String> parametros) {
-        String comando = "NewFolder<:@:>" + parametros.get(0);
+        String comando = "Delete<:@:>" + parametros.get(0);
         conexion.escribir(comando);
         try {
             entrada = conexion.leer();

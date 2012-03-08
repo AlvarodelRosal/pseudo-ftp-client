@@ -1,4 +1,4 @@
-package alvarodelrosal.ftp.ui;
+package alvarodelrosal.ftp.ui.ventanas;
 
 import alvarodelrosal.ftp.modelo.Usuario;
 import alvarodelrosal.ftp.modelo.Acciones.FTPLogin;
