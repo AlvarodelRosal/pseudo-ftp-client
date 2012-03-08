@@ -1,10 +1,11 @@
 package alvarodelrosal.ftp.ui.factorias;
 
 import alvarodelrosal.ftp.modelo.Acciones.FTPBye;
-import alvarodelrosal.ftp.modelo.Acciones.FTPIsFolder;
 import alvarodelrosal.ftp.modelo.Acciones.FTPNewFolder;
-import alvarodelrosal.ftp.modelo.Conexion;
-import alvarodelrosal.ftp.ui.*;
+import alvarodelrosal.ftp.ui.Dialogo;
+import alvarodelrosal.ftp.ui.ElementoDeToolbar;
+import alvarodelrosal.ftp.ui.Toolbar;
+import alvarodelrosal.ftp.ui.VentanaPrincipal;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -80,9 +81,11 @@ public class FactoriaDeToolbars {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            String pathActual = ventana.pathActual().verPath();
-            if (pathActual != null) {
-                ventana.irAlPath(pathActual);
+            String pathActual = ventana.pathActual().verPathCompleto();
+            if (!"/".equals(pathActual)) {
+                String pathObjetivo = pathActual.substring(0, pathActual.length() - 1);
+                pathObjetivo = pathObjetivo.substring(0, pathObjetivo.lastIndexOf("/") + 1);
+                ventana.irAlPath(pathObjetivo);
             }
         }
     }
@@ -91,8 +94,8 @@ public class FactoriaDeToolbars {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            
-            
+
+
             if (ventana.pathActual().esEscribible()) {
                 String nombreCarpeta = Dialogo.pintarCuadroDeDialogo("Carpeta nueva",
                         "Introduzca el nombre de la carpeta nueva");

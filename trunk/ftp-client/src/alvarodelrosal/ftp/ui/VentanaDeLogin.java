@@ -66,6 +66,7 @@ public class VentanaDeLogin extends Ventana {
     private JButton botonDeConectar() {
         JButton conectar = new JButton("Conectar");
         conectar.setBounds(170, 130, 100, 30);
+        ventanaDeLogin.getRootPane().setDefaultButton(conectar);
         conectar.addActionListener(new ActionListener() {
 
             @Override
