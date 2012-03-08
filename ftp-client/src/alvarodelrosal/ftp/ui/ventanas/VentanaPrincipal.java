@@ -1,10 +1,14 @@
-package alvarodelrosal.ftp.ui;
+package alvarodelrosal.ftp.ui.ventanas;
 
 import alvarodelrosal.ftp.modelo.Acciones.FTPBye;
 import alvarodelrosal.ftp.modelo.Conexion;
 import alvarodelrosal.ftp.modelo.Path;
 import alvarodelrosal.ftp.modelo.RepositorioDePaths;
 import alvarodelrosal.ftp.modelo.Usuario;
+import alvarodelrosal.ftp.ui.ModeloDeTablaDeArchivos;
+import alvarodelrosal.ftp.ui.Statusbar;
+import alvarodelrosal.ftp.ui.TablaConScroll;
+import alvarodelrosal.ftp.ui.Toolbar;
 import alvarodelrosal.ftp.ui.factorias.FactoriaDeToolbars;
 import java.awt.BorderLayout;
 import java.awt.Dimension;

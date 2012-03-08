@@ -93,11 +93,13 @@ public class Path {
             
             double tamano = (double) peso;
             while (tamano >= 1024) {
-                tamano = tamano/1024;
+                tamano = tamano / 1024;
                 unidad++;
             }
             return String.valueOf(tamano) + " " + unidades[unidad];
         }
+    
+    
     }
     
 }

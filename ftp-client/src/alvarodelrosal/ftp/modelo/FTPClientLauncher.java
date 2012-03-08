@@ -1,6 +1,6 @@
 package alvarodelrosal.ftp.modelo;
 
-import alvarodelrosal.ftp.ui.VentanaDeLogin;
+import alvarodelrosal.ftp.ui.ventanas.VentanaDeLogin;
 import java.io.IOException;
 import java.net.Socket;
 

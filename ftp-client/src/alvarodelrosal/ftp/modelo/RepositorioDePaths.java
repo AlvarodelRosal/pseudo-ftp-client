@@ -76,7 +76,6 @@ public class RepositorioDePaths {
         peso.ejecutar(parametros);
         return (Long) peso.respuestaEnObjeto();
     }
-    
-    
+
     
 }

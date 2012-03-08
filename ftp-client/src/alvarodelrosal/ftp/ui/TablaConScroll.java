@@ -31,6 +31,7 @@ public class TablaConScroll extends ElementoDeVentana {
         contenedorDeTabla.add(mensajes, BorderLayout.NORTH);
         mensajes.setVisible(false);
 
+        tabla.setAutoResizeMode(JTable.AUTO_RESIZE_NEXT_COLUMN);
         tabla.addMouseListener(new ListenerDeDobleClick());
     }
 
@@ -39,7 +40,11 @@ public class TablaConScroll extends ElementoDeVentana {
     }
     
     public Path pathSeleccionado() {
-        return modelo.elementoEn(tabla.getSelectedRow());
+        if(tabla.getSelectedRow() < 0) {
+            return null;
+        } else {
+            return modelo.elementoEn(tabla.getSelectedRow());
+        }
     }
     
     public Path pathActual() {
@@ -54,7 +59,7 @@ public class TablaConScroll extends ElementoDeVentana {
 
     public void generarMensajeDeErrorDeFicheros(String mensaje) {
         contenedorDeTabla.setBackground(Color.ORANGE);
-                mensajes.setText(mensaje);
+                mensajes.setText(" " + mensaje);
                 mensajes.setVisible(true);
     }
     
@@ -80,8 +85,7 @@ public class TablaConScroll extends ElementoDeVentana {
 
         private void muestraSiEsUnaCarpetaSiEsUnArchivoDaUnMensajeDeError(Path pathObjetivo) {
             if (!pathObjetivo.esUnaCarpeta()) {
-                contenedorDeTabla.setBackground(Color.ORANGE);
-                mensajes.setText("Para descargar un archivo, utilice la barra de herramientas");
+                generarMensajeDeErrorDeFicheros("Para descargar un archivo, utilice la barra de herramientas");
                 mensajes.setVisible(true);
             }
         }
@@ -94,8 +98,7 @@ public class TablaConScroll extends ElementoDeVentana {
 
         private void muestraSiEsLegibleYSiNoMuestraUnMensajeDeError(Path pathObjetivo) {
             if (!pathObjetivo.esLegible()) {
-                contenedorDeTabla.setBackground(Color.ORANGE);
-                mensajes.setText("No tiene privilegios de lectura para ese directorio");
+                generarMensajeDeErrorDeFicheros("No tiene privilegios de lectura para ese directorio");
                 mensajes.setVisible(true);
             }
         }

@@ -72,7 +72,8 @@ public class ModeloDeTablaDeArchivos extends AbstractTableModel {
     }
 
     private boolean laCarpetaEstaVacia() {
-        return " ".equals(elementoEn(0).verNombre());
+        return "".equals(elementos.get(0).verNombre()) ||
+               " ".equals(elementos.get(0).verNombre());
     }
 
     public Path elementoEn(int fila) {
