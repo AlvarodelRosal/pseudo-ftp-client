@@ -11,7 +11,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.TableModel;
 
-public class TablaConScroll extends ElementoDeVentana {
+public class TablaDeNavegacionDeArchivos extends ElementoDeVentana {
 
     private JPanel contenedorDeTabla;
     private JTable tabla;
@@ -20,7 +20,7 @@ public class TablaConScroll extends ElementoDeVentana {
     private JLabel mensajes = new JLabel("");
     private ModeloDeTablaDeArchivos modelo;
 
-    public TablaConScroll(TableModel modelo) {
+    public TablaDeNavegacionDeArchivos(TableModel modelo) {
         this.modelo = (ModeloDeTablaDeArchivos) modelo;
         tabla = new JTable(modelo);
         panelDeScroll = new JScrollPane(tabla);
