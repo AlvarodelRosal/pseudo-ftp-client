@@ -9,7 +9,7 @@ import alvarodelrosal.ftp.ui.ModeloDeTablaDeArchivos;
 import alvarodelrosal.ftp.ui.Statusbar;
 import alvarodelrosal.ftp.ui.TablaConScroll;
 import alvarodelrosal.ftp.ui.Toolbar;
-import alvarodelrosal.ftp.ui.factorias.FactoriaDeToolbars;
+import alvarodelrosal.ftp.ui.factorias.FactoriaDeToolbarsDeAccionesDeLaVentanaPrincipal;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.HeadlessException;
@@ -34,7 +34,7 @@ public class VentanaPrincipal extends Ventana {
         this.usuario = usuario;
         pregeneraLaVentana();
         
-        agregarToolbar(new FactoriaDeToolbars(this).obtener());
+        agregarToolbar(new FactoriaDeToolbarsDeAccionesDeLaVentanaPrincipal(this).obtener());
         agregarTabla(new TablaConScroll(
                 new ModeloDeTablaDeArchivos(new RepositorioDePaths(),
                 new Path("/", ""), conexion)));
