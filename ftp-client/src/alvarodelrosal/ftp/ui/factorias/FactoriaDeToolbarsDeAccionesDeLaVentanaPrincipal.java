@@ -7,18 +7,20 @@ import alvarodelrosal.ftp.modelo.Path;
 import alvarodelrosal.ftp.ui.ElementoDeToolbar;
 import alvarodelrosal.ftp.ui.Toolbar;
 import alvarodelrosal.ftp.ui.ventanas.Dialogo;
+import alvarodelrosal.ftp.ui.ventanas.VentanaDeUsuarios;
 import alvarodelrosal.ftp.ui.ventanas.VentanaPrincipal;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FactoriaDeToolbars {
+public class FactoriaDeToolbarsDeAccionesDeLaVentanaPrincipal {
 
     private List<ElementoDeToolbar> elementos = new ArrayList();
     private VentanaPrincipal ventana;
+    private VentanaDeUsuarios ventanaDeUsuarios = null;
 
-    public FactoriaDeToolbars(VentanaPrincipal ventana) {
+    public FactoriaDeToolbarsDeAccionesDeLaVentanaPrincipal(VentanaPrincipal ventana) {
         this.ventana = ventana;
         componerBarra();
     }
@@ -62,10 +64,11 @@ public class FactoriaDeToolbars {
             elementos.add(verInfo);
 
             elementos.add(separador);
+        
+            ElementoDeToolbar administrarUsuarios = new ElementoDeToolbar("Administrar usuarios", "users");
+            administrarUsuarios.agregarActionListener(new ActionListenerDeAdministracionDeUsuarios());
+            elementos.add(administrarUsuarios);
         }
-
-        ElementoDeToolbar administrarUsuarios = new ElementoDeToolbar("Administrar usuarios", "users");
-        elementos.add(administrarUsuarios);
     }
 
     public Toolbar obtener() {
@@ -143,5 +146,23 @@ public class FactoriaDeToolbars {
                 }
             }
         }
+    }
+    
+    class ActionListenerDeAdministracionDeUsuarios implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            if (laVentanaDeUsuariosNoExiste()) {
+                ventanaDeUsuarios = new VentanaDeUsuarios();
+                ventanaDeUsuarios.hacerVisible();
+            } else {
+                ventanaDeUsuarios.hacerVisible();
+            }
+        }
+
+        private boolean laVentanaDeUsuariosNoExiste() {
+            return ventanaDeUsuarios == null;
+        }
+
     }
 }
