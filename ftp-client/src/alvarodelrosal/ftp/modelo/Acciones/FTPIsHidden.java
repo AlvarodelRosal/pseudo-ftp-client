@@ -43,8 +43,7 @@ public class FTPIsHidden implements FTPAction {
         }
     }
 
-    @Override
-    public Object respuestaEnObjeto() {
+    public boolean respuestaEnObjeto() {
         return Boolean.parseBoolean(entrada);
     }
 }

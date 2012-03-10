@@ -7,6 +7,5 @@ public interface FTPAction {
     public String verNombre();
     public void ejecutar(List<String> parametros);
     public List<String> obtenerDatos();
-    public Object respuestaEnObjeto();
     
 }

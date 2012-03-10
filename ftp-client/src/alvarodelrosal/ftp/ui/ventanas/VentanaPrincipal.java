@@ -56,7 +56,7 @@ public class VentanaPrincipal extends Ventana {
     
     private void agregarTabla(TablaDeNavegacionDeArchivos tabla) {
         this.tabla = tabla;
-        ventanaPrincipal.getContentPane().add(this.tabla.obtenerTabla(),
+        ventanaPrincipal.getContentPane().add(this.tabla.obtenerTabla().obtenerLaTablaConScroll(),
                 BorderLayout.CENTER);
     }
     
@@ -69,10 +69,8 @@ public class VentanaPrincipal extends Ventana {
     }
     
     public void generar() {
-        String contenidoDeStatusbar = " " + usuario.verNombre();
-        if (usuario.esAdmin()) {
-            contenidoDeStatusbar += " - Administrador";
-        }
+        String contenidoDeStatusbar = " " + usuario.verNombre() + " ("
+                + usuario.verUsername() + ") - " + usuario.verNivel();
         statusbar.cambiarTexto(contenidoDeStatusbar);
         
         ventanaPrincipal.setVisible(false);

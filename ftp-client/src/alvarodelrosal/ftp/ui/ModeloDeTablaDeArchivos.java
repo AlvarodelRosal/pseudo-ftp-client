@@ -22,14 +22,17 @@ public class ModeloDeTablaDeArchivos extends AbstractTableModel {
         this.repositorioDePaths = repositorioDePaths;
     }
 
+    @Override
     public int getRowCount() {
         return elementos.size();
     }
 
+    @Override
     public int getColumnCount() {
         return 4;
     }
 
+    @Override
     public Object getValueAt(int fila, int columna) {
         if (columna == 0) {
             return elementos.get(fila).verNombre();

@@ -34,7 +34,7 @@ public class FTPDelete implements FTPAction {
 
     @Override
     public void ejecutar(List<String> parametros) {
-        String comando = "Delete<:@:>" + parametros.get(0);
+        String comando = "Delete<:@:>" + parametros.get(0) + "<:@:>" + parametros.get(1);
         conexion.escribir(comando);
         try {
             entrada = conexion.leer();
@@ -43,9 +43,4 @@ public class FTPDelete implements FTPAction {
         }
     }
 
-    @Override
-    public Object respuestaEnObjeto() {
-        return Boolean.parseBoolean(entrada);
-    }
-    
 }

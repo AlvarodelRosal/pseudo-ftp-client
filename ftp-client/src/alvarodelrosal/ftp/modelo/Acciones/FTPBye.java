@@ -27,9 +27,4 @@ public class FTPBye implements FTPAction {
     public void ejecutar(List<String> parametros) {
         conexion.escribir("Bye");
     }
-
-    @Override
-    public Object respuestaEnObjeto() {
-        return null;
-    }
 }

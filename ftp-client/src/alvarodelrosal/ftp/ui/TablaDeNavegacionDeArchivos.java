@@ -1,49 +1,31 @@
 package alvarodelrosal.ftp.ui;
 
 import alvarodelrosal.ftp.modelo.Path;
-import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
 import javax.swing.table.TableModel;
 
 public class TablaDeNavegacionDeArchivos extends ElementoDeVentana {
 
-    private JPanel contenedorDeTabla;
-    private JTable tabla;
-    private JScrollPane panelDeScroll;
+    private TablaConScroll tabla;
     private Path pathActual;
-    private JLabel mensajes = new JLabel("");
     private ModeloDeTablaDeArchivos modelo;
 
     public TablaDeNavegacionDeArchivos(TableModel modelo) {
         this.modelo = (ModeloDeTablaDeArchivos) modelo;
-        tabla = new JTable(modelo);
-        panelDeScroll = new JScrollPane(tabla);
-        contenedorDeTabla = new JPanel(new BorderLayout());
-
-        contenedorDeTabla.add(panelDeScroll, BorderLayout.CENTER);
-
-        contenedorDeTabla.add(mensajes, BorderLayout.NORTH);
-        mensajes.setVisible(false);
-
-        tabla.setAutoResizeMode(JTable.AUTO_RESIZE_NEXT_COLUMN);
-        tabla.addMouseListener(new ListenerDeDobleClick());
+        tabla = new TablaConScroll(modelo);
+        tabla.agregarClickListenerALaTabla(new ListenerDeDobleClick());
     }
 
-    public JPanel obtenerTabla() {
-        return contenedorDeTabla;
+    public TablaConScroll obtenerTabla() {
+        return tabla;
     }
     
     public Path pathSeleccionado() {
-        if(tabla.getSelectedRow() < 0) {
+        if(tabla.filaSeleccionada() < 0) {
             return null;
         } else {
-            return modelo.elementoEn(tabla.getSelectedRow());
+            return modelo.elementoEn(tabla.filaSeleccionada());
         }
     }
     
@@ -54,13 +36,11 @@ public class TablaDeNavegacionDeArchivos extends ElementoDeVentana {
     public void irAlPath(Path path) {
         this.pathActual = path;
         modelo.actualizar(path.verPathCompleto());
-        mensajes.setVisible(false);
+        tabla.ocultarMensaje();
     }
 
     public void generarMensajeDeErrorDeFicheros(String mensaje) {
-        contenedorDeTabla.setBackground(Color.ORANGE);
-                mensajes.setText(" " + mensaje);
-                mensajes.setVisible(true);
+        tabla.generarMensaje(mensaje);
     }
     
     class ListenerDeDobleClick implements MouseListener {
@@ -86,20 +66,18 @@ public class TablaDeNavegacionDeArchivos extends ElementoDeVentana {
         private void muestraSiEsUnaCarpetaSiEsUnArchivoDaUnMensajeDeError(Path pathObjetivo) {
             if (!pathObjetivo.esUnaCarpeta()) {
                 generarMensajeDeErrorDeFicheros("Para descargar un archivo, utilice la barra de herramientas");
-                mensajes.setVisible(true);
             }
         }
 
         private void mostrarCarpeta(Path pathObjetivo) {
             irAlPath(pathObjetivo);
-            mensajes.setVisible(false);
+            tabla.ocultarMensaje();
         }
         
 
         private void muestraSiEsLegibleYSiNoMuestraUnMensajeDeError(Path pathObjetivo) {
             if (!pathObjetivo.esLegible()) {
                 generarMensajeDeErrorDeFicheros("No tiene privilegios de lectura para ese directorio");
-                mensajes.setVisible(true);
             }
         }
 

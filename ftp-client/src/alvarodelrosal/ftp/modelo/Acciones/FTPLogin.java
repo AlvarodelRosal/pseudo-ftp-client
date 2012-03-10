@@ -1,7 +1,7 @@
 package alvarodelrosal.ftp.modelo.Acciones;
 
-import alvarodelrosal.ftp.modelo.FTPAction;
 import alvarodelrosal.ftp.modelo.Conexion;
+import alvarodelrosal.ftp.modelo.FTPAction;
 import alvarodelrosal.ftp.modelo.Usuario;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -47,12 +47,12 @@ public class FTPLogin implements FTPAction {
         return parametros;
     }
 
-    @Override
-    public Object respuestaEnObjeto() {
+    public Usuario respuestaEnObjeto() {
         if (elUsuarioExiste()) {
             String[] parametrosLeidos = entrada.split("<:@:>");
             Usuario usuario = new Usuario(parametrosLeidos[0],
-                    Boolean.parseBoolean(parametrosLeidos[1]));
+                    parametrosLeidos[1],
+                    Boolean.parseBoolean(parametrosLeidos[2]));
             return usuario;
         } else {
             return null;
