@@ -1,7 +1,7 @@
 package alvarodelrosal.ftp.ui.ventanas;
 
 import alvarodelrosal.ftp.modelo.Acciones.FTPAddUser;
-import alvarodelrosal.ftp.modelo.Acciones.FTPDelete;
+import alvarodelrosal.ftp.modelo.Acciones.FTPDeleteUser;
 import alvarodelrosal.ftp.modelo.Conexion;
 import alvarodelrosal.ftp.modelo.RepositorioDeUsuarios;
 import alvarodelrosal.ftp.modelo.Usuario;
@@ -161,7 +161,7 @@ public class VentanaDeAgregarUsuario extends Ventana {
             if (lasClavesSonIgualesYNoVacias()) {
                 if (esUnaModificacionDeUsuario()) {
                     List<String> parametrosDeBorrado = new ArrayList();
-                    FTPDelete delete = new FTPDelete(conexion);
+                    FTPDeleteUser delete = new FTPDeleteUser(conexion);
 
                     parametrosDeBorrado.add(usuario.verNombre());
                     parametrosDeBorrado.add(usuario.verUsername());
@@ -180,7 +180,6 @@ public class VentanaDeAgregarUsuario extends Ventana {
                     addUser.ejecutar(parametros);
 
                     ventanaDeAgregarUsuario.setVisible(false);
-                    ventanaDeUsuarios.obtenerLaTabla().actualizarTabla();
                     if (esUnaModificacionDeUsuario()) {
                         ventanaDeUsuarios.obtenerLaTabla().generarMensajeDeTabla("Usuario modificado correctamente");
                     } else {
