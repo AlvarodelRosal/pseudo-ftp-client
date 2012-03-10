@@ -1,7 +1,11 @@
 package alvarodelrosal.ftp.ui.ventanas;
 
-import alvarodelrosal.ftp.ui.Statusbar;
+import alvarodelrosal.ftp.modelo.Conexion;
+import alvarodelrosal.ftp.modelo.RepositorioDeUsuarios;
+import alvarodelrosal.ftp.ui.ModeloDeTablaDeUsuarios;
+import alvarodelrosal.ftp.ui.TablaDeAdministracionDeUsuarios;
 import alvarodelrosal.ftp.ui.Toolbar;
+import alvarodelrosal.ftp.ui.factorias.FactoriaDeToolbarsDeAdministracionDeUsuarios;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Toolkit;
@@ -10,13 +14,33 @@ import javax.swing.JFrame;
 public class VentanaDeUsuarios extends Ventana {
     
     private JFrame ventanaDeUsuarios;
-    private Toolbar toolbarDeAdministracion;
-    private Statusbar statusbar;
+    private Toolbar toolbar;
+    private TablaDeAdministracionDeUsuarios tabla;
     
-    public VentanaDeUsuarios() {
+    private Conexion conexion;
+    
+    public VentanaDeUsuarios(Conexion conexion) {
+        this.conexion = conexion;
         pregeneraLaVentana();
+        
+        agregarTabla(new TablaDeAdministracionDeUsuarios(
+                new ModeloDeTablaDeUsuarios(new RepositorioDeUsuarios(), this.conexion)));
+        
+        agregarToolbar(new FactoriaDeToolbarsDeAdministracionDeUsuarios(this).obtener());
+    }
+    
+    private void agregarToolbar(Toolbar toolbar) {
+        this.toolbar = toolbar;
+        ventanaDeUsuarios.getContentPane().add(this.toolbar.generarToolbar(),
+                BorderLayout.NORTH);
     }
 
+    private void agregarTabla(TablaDeAdministracionDeUsuarios tabla) {
+        this.tabla = tabla;
+        ventanaDeUsuarios.getContentPane().add(this.tabla.obtenerTabla().obtenerLaTablaConScroll(),
+                BorderLayout.CENTER);
+    }
+    
     private void pregeneraLaVentana() {
         estableceElTituloDeLaVentana();
         estableceDimensionesDeLaVentana();
@@ -29,7 +53,7 @@ public class VentanaDeUsuarios extends Ventana {
     }
 
     private void estableceDimensionesDeLaVentana() {
-        ventanaDeUsuarios.setSize(800, 600);
+        ventanaDeUsuarios.setSize(400, 300);
     }
 
     private void centraLaVentana() {
@@ -51,4 +75,11 @@ public class VentanaDeUsuarios extends Ventana {
         ventanaDeUsuarios.setVisible(false);
     }
     
+    public TablaDeAdministracionDeUsuarios obtenerLaTabla() {
+        return tabla;
+    }
+    
+    public Conexion obtenerConexion() {
+        return conexion;
+    }    
 }

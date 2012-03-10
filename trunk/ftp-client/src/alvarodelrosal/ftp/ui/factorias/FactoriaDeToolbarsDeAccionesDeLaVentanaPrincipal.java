@@ -153,7 +153,7 @@ public class FactoriaDeToolbarsDeAccionesDeLaVentanaPrincipal {
         @Override
         public void actionPerformed(ActionEvent e) {
             if (laVentanaDeUsuariosNoExiste()) {
-                ventanaDeUsuarios = new VentanaDeUsuarios();
+                ventanaDeUsuarios = new VentanaDeUsuarios(ventana.obtenerLaConexion());
                 ventanaDeUsuarios.hacerVisible();
             } else {
                 ventanaDeUsuarios.hacerVisible();

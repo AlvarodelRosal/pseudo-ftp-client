@@ -64,43 +64,19 @@ public class VentanaDeLogin extends Ventana {
     }
 
     private JButton botonDeConectar() {
-        JButton conectar = new JButton("Conectar");
+        ImageIcon iconoCandado = new ImageIcon(getClass().getResource("/iconos/lock.png"));
+
+        JButton conectar = new JButton("Conectar", iconoCandado);
         conectar.setBounds(170, 130, 100, 30);
         ventanaDeLogin.getRootPane().setDefaultButton(conectar);
-        conectar.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent ae) {
-                int puerto = new Integer(campoPuerto.getText());
-
-                Conexion conexion = new Conexion(campoHost.getText(), puerto);
-                FTPLogin login = new FTPLogin(conexion);
-                List<String> parametrosDeLogin = new ArrayList();
-                parametrosDeLogin.add(campoUsuario.getText());
-                parametrosDeLogin.add(campoClave.getText());
-                
-                login.ejecutar(parametrosDeLogin);
-                Usuario usuario = (Usuario) login.respuestaEnObjeto();
-                
-                if (existeEl(usuario)) {
-                    VentanaPrincipal ventanaPrincipal = new VentanaPrincipal(conexion, usuario);
-                    ventanaDeLogin.setVisible(false);
-                    ventanaPrincipal.generar();
-                } else {
-                    Dialogo.pintarMensajeDeError("Datos incorrectos",
-                            "Datos de conexión incorrectos.\nPor favor, revíselos.");
-                }
-            };
-
-            private boolean existeEl(Usuario usuario) {
-                return usuario != null;
-            }
-        });
+        conectar.addActionListener(new actionListenerDeConexion());
         return conectar;
     }
 
     private JButton botonDeSalir() {
-        JButton salir = new JButton("Salir");
+        ImageIcon iconoSalir = new ImageIcon(getClass().getResource("/iconos/door-open.png"));
+
+        JButton salir = new JButton("Salir", iconoSalir);
         salir.setBounds(60, 130, 100, 30);
         salir.addActionListener(new ActionListener() {
 
@@ -145,5 +121,37 @@ public class VentanaDeLogin extends Ventana {
         JPasswordField campo = new JPasswordField();
         campo.setBounds(170, 10 + 30 * posicion, 150, 30);
         return campo;
+    }
+
+    class actionListenerDeConexion implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent ae) {
+            int puerto = new Integer(campoPuerto.getText());
+
+            Conexion conexion = new Conexion(campoHost.getText(), puerto);
+            FTPLogin login = new FTPLogin(conexion);
+            List<String> parametrosDeLogin = new ArrayList();
+            parametrosDeLogin.add(campoUsuario.getText());
+            parametrosDeLogin.add(campoClave.getText());
+
+            login.ejecutar(parametrosDeLogin);
+            Usuario usuario = login.respuestaEnObjeto();
+
+            if (existeEl(usuario)) {
+                VentanaPrincipal ventanaPrincipal = new VentanaPrincipal(conexion, usuario);
+                ventanaDeLogin.setVisible(false);
+                ventanaPrincipal.generar();
+            } else {
+                Dialogo.pintarMensajeDeError("Datos incorrectos",
+                        "Datos de conexión incorrectos.\nPor favor, revíselos.");
+            }
+        }
+
+        ;
+
+            private boolean existeEl(Usuario usuario) {
+            return usuario != null;
+        }
     }
 }

@@ -43,9 +43,4 @@ public class FTPNewFolder implements FTPAction {
         }
     }
 
-    @Override
-    public Object respuestaEnObjeto() {
-        return Boolean.parseBoolean(entrada);
-    }
-    
 }

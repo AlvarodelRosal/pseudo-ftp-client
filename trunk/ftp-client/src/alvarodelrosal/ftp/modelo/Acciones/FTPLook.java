@@ -43,9 +43,4 @@ public class FTPLook implements FTPAction {
         }
     }
 
-    @Override
-    public Object respuestaEnObjeto() {
-        return null;
-    }
-    
 }

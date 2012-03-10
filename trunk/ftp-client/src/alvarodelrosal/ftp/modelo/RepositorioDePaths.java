@@ -74,8 +74,7 @@ public class RepositorioDePaths {
         List<String> parametros = new ArrayList();
         parametros.add(direccionCompleta);
         peso.ejecutar(parametros);
-        return (Long) peso.respuestaEnObjeto();
+        return peso.respuestaEnObjeto();
     }
 
-    
 }
