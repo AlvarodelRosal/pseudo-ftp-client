@@ -1,5 +1,7 @@
 package alvarodelrosal.ftp.modelo;
 
+import java.util.Date;
+
 public class Path {
 
     private String path;
@@ -40,8 +42,9 @@ public class Path {
         this.peso = peso;
     }
 
-    public void ultimaModificacion(String ultimaModificacion) {
-        this.ultimaModificacion = ultimaModificacion;
+    public void ultimaModificacion(long ultimaModificacion) {
+        Date fecha = new Date(ultimaModificacion);
+        this.ultimaModificacion = fecha.toString();
     }
     
     public String verTipo() {

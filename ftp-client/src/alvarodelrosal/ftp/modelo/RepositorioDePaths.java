@@ -26,6 +26,7 @@ public class RepositorioDePaths {
             path.esUnaCarpeta(compruebaSiEsUnaCarpeta(direccionCompleta, conexion));
             path.estaOculto(compruebaSiEstaOculto(direccionCompleta, conexion));
             path.setPeso(obtieneElPeso(direccionCompleta, conexion));
+            path.ultimaModificacion(obtieneLaUltimaModificacion(direccionCompleta, conexion));
             
             paths.add(path);
         }
@@ -75,6 +76,15 @@ public class RepositorioDePaths {
         parametros.add(direccionCompleta);
         peso.ejecutar(parametros);
         return peso.respuestaEnObjeto();
+    }
+
+    private long obtieneLaUltimaModificacion(String direccionCompleta, Conexion conexion) {
+        FTPLastModified modificacion = new FTPLastModified(conexion);
+        
+        List<String> parametros = new ArrayList();
+        parametros.add(direccionCompleta);
+        modificacion.ejecutar(parametros);
+        return modificacion.respuestaEnObjeto();
     }
 
 }

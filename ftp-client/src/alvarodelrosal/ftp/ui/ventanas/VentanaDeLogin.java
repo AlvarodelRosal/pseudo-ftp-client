@@ -1,8 +1,8 @@
 package alvarodelrosal.ftp.ui.ventanas;
 
-import alvarodelrosal.ftp.modelo.Usuario;
 import alvarodelrosal.ftp.modelo.Acciones.FTPLogin;
 import alvarodelrosal.ftp.modelo.Conexion;
+import alvarodelrosal.ftp.modelo.Usuario;
 import java.awt.Dimension;
 import java.awt.HeadlessException;
 import java.awt.Toolkit;
@@ -45,7 +45,7 @@ public class VentanaDeLogin extends Ventana {
             JLabel etiquetaHost = crearEtiqueta("Host:", 2);
             ventanaDeLogin.add(etiquetaHost);
             campoHost = crearCampo(2);
-            campoHost.setText("localhost");
+            campoHost.setText("192.168.2.106");
             ventanaDeLogin.add(campoHost);
 
             JLabel etiquetaPuerto = crearEtiqueta("Puerto:", 3);
