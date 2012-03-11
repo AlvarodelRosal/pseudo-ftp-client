@@ -17,7 +17,7 @@ public class Path {
         this.path = path;
         this.nombre = nombre;
     }
-    
+
     public String verNombre() {
         return nombre;
     }
@@ -46,19 +46,19 @@ public class Path {
         Date fecha = new Date(ultimaModificacion);
         this.ultimaModificacion = fecha.toString();
     }
-    
+
     public String verTipo() {
-        if(esUnaCarpeta) {
+        if (esUnaCarpeta) {
             return "Carpeta";
         } else {
             return "Archivo";
         }
     }
-    
+
     public String verPath() {
         return path;
     }
-    
+
     public String verPathCompleto() {
         String direccion = path + nombre;
         if (esUnaCarpeta) {
@@ -66,43 +66,83 @@ public class Path {
         }
         return direccion;
     }
-    
+
     public boolean esUnaCarpeta() {
         return esUnaCarpeta;
     }
-    
+
     public String ultimaModificacion() {
         return ultimaModificacion;
     }
-    
+
     public boolean estaOculto() {
         return oculto;
     }
-    
+
     public boolean esEscribible() {
         return escribible;
     }
-    
+
     public boolean esLegible() {
         return legible;
     }
-    
+
     public String verPeso() {
         if (esUnaCarpeta) {
             return "--";
         } else {
-            String[] unidades = {"B","KB","MB","GB","TB","PB","HB"};
-            int unidad = 0;
-            
-            double tamano = (double) peso;
-            while (tamano >= 1024) {
-                tamano = tamano / 1024;
-                unidad++;
+            String tamanoConTodosLosDecimales = calculaElTamanoConTodosLosDecimalesDePrecision();
+            String unidad = calculaLaUnidad();
+            String tamanoConDosDecimales = "";
+
+            if (tieneDecimales(tamanoConTodosLosDecimales)) {
+                int posicionDelSeparadorDecimal = tamanoConTodosLosDecimales.lastIndexOf(".");
+                if (soloTieneUnDecimal(posicionDelSeparadorDecimal, tamanoConTodosLosDecimales)) {
+                    tamanoConDosDecimales = tamanoConTodosLosDecimales;
+                } else {
+                    tamanoConDosDecimales = tamanoConTodosLosDecimales.substring(0, posicionDelSeparadorDecimal + 2);
+                }
+            } else {
+                tamanoConDosDecimales = tamanoConTodosLosDecimales;
             }
-            return String.valueOf(tamano) + " " + unidades[unidad];
+
+            return tamanoConDosDecimales + " " + unidad;
         }
-    
-    
+
+
     }
-    
+
+    private boolean tieneDecimales(String tamanoConTodosLosDecimales) {
+        return tamanoConTodosLosDecimales.contains(".");
+    }
+
+    private boolean soloTieneUnDecimal(int posicionDelSeparadorDecimal, String tamanoConTodosLosDecimales) {
+        return posicionDelSeparadorDecimal + 1 == tamanoConTodosLosDecimales.length();
+    }
+
+    private String calculaElTamanoConTodosLosDecimalesDePrecision() {
+        String[] unidades = {"B", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"};
+        int unidad = 0;
+
+        double tamano = (double) peso;
+        while (tamano >= 1024) {
+            tamano = tamano / 1024;
+            unidad++;
+        }
+
+        return String.valueOf(tamano);
+    }
+
+    private String calculaLaUnidad() {
+        String[] unidades = {"B", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"};
+        int unidad = 0;
+
+        double tamano = (double) peso;
+        while (tamano >= 1024) {
+            tamano = tamano / 1024;
+            unidad++;
+        }
+        
+        return unidades[unidad];
+    }
 }
