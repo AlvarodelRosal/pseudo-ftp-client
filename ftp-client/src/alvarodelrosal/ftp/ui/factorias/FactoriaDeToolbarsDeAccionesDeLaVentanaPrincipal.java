@@ -61,11 +61,11 @@ public class FactoriaDeToolbarsDeAccionesDeLaVentanaPrincipal {
 
         elementos.add(separador);
 
-        if (ventana.obtenerElUsuario().esAdmin()) {
-            ElementoDeToolbar verInfo = new ElementoDeToolbar("Ver información del archivo", "information");
-            verInfo.agregarActionListener(new ActionListenerDeVerInformacion());
-            elementos.add(verInfo);
+        ElementoDeToolbar verInfo = new ElementoDeToolbar("Ver información del archivo", "information");
+        verInfo.agregarActionListener(new ActionListenerDeVerInformacion());
+        elementos.add(verInfo);
 
+        if (ventana.obtenerElUsuario().esAdmin()) {
             elementos.add(separador);
 
             ElementoDeToolbar administrarUsuarios = new ElementoDeToolbar("Administrar usuarios", "users");
@@ -158,7 +158,7 @@ public class FactoriaDeToolbarsDeAccionesDeLaVentanaPrincipal {
             if (laVentanaDenformacionNoExiste()) {
                 ventanaDePropiedades = new VentanaDePropiedades();
             }
-            
+
             if (haySeleccionadaAlgunaFila()) {
                 ventanaDePropiedades.crear(ventana.pathSeleccionado());
             } else {
