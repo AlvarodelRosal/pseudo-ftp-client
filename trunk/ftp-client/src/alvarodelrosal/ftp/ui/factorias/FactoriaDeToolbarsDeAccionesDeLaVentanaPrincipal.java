@@ -7,6 +7,7 @@ import alvarodelrosal.ftp.modelo.Path;
 import alvarodelrosal.ftp.ui.ElementoDeToolbar;
 import alvarodelrosal.ftp.ui.Toolbar;
 import alvarodelrosal.ftp.ui.ventanas.Dialogo;
+import alvarodelrosal.ftp.ui.ventanas.VentanaDePropiedades;
 import alvarodelrosal.ftp.ui.ventanas.VentanaDeUsuarios;
 import alvarodelrosal.ftp.ui.ventanas.VentanaPrincipal;
 import java.awt.event.ActionEvent;
@@ -19,6 +20,7 @@ public class FactoriaDeToolbarsDeAccionesDeLaVentanaPrincipal {
     private List<ElementoDeToolbar> elementos = new ArrayList();
     private VentanaPrincipal ventana;
     private VentanaDeUsuarios ventanaDeUsuarios = null;
+    private VentanaDePropiedades ventanaDePropiedades = null;
 
     public FactoriaDeToolbarsDeAccionesDeLaVentanaPrincipal(VentanaPrincipal ventana) {
         this.ventana = ventana;
@@ -61,10 +63,11 @@ public class FactoriaDeToolbarsDeAccionesDeLaVentanaPrincipal {
 
         if (ventana.obtenerElUsuario().esAdmin()) {
             ElementoDeToolbar verInfo = new ElementoDeToolbar("Ver información del archivo", "information");
+            verInfo.agregarActionListener(new ActionListenerDeVerInformacion());
             elementos.add(verInfo);
 
             elementos.add(separador);
-        
+
             ElementoDeToolbar administrarUsuarios = new ElementoDeToolbar("Administrar usuarios", "users");
             administrarUsuarios.agregarActionListener(new ActionListenerDeAdministracionDeUsuarios());
             elementos.add(administrarUsuarios);
@@ -147,7 +150,33 @@ public class FactoriaDeToolbarsDeAccionesDeLaVentanaPrincipal {
             }
         }
     }
-    
+
+    class ActionListenerDeVerInformacion implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent ae) {
+            if (laVentanaDenformacionNoExiste()) {
+                ventanaDePropiedades = new VentanaDePropiedades();
+            }
+            
+            if (haySeleccionadaAlgunaFila()) {
+                ventanaDePropiedades.crear(ventana.pathSeleccionado());
+            } else {
+                ventana.agregarMensajeDeError("Seleccione algún elemento para ver sus propiedades");
+            }
+            ventanaDePropiedades.hacerVisible();
+            ventanaDePropiedades.hacerVisible();
+        }
+
+        private boolean haySeleccionadaAlgunaFila() {
+            return ventana.pathSeleccionado() != null;
+        }
+
+        private boolean laVentanaDenformacionNoExiste() {
+            return ventanaDePropiedades == null;
+        }
+    }
+
     class ActionListenerDeAdministracionDeUsuarios implements ActionListener {
 
         @Override
@@ -163,6 +192,5 @@ public class FactoriaDeToolbarsDeAccionesDeLaVentanaPrincipal {
         private boolean laVentanaDeUsuariosNoExiste() {
             return ventanaDeUsuarios == null;
         }
-
     }
 }
