@@ -37,7 +37,7 @@ public class VentanaPrincipal extends Ventana {
         agregarToolbar(new FactoriaDeToolbarsDeAccionesDeLaVentanaPrincipal(this).obtener());
         agregarTabla(new TablaDeNavegacionDeArchivos(
                 new ModeloDeTablaDeArchivos(new RepositorioDePaths(),
-                new Path("/", ""), conexion)));
+                new Path("/", ""), conexion), this));
         this.irAlPath("/");
         agregarStatusbar(new Statusbar());
     }

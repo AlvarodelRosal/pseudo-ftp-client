@@ -17,20 +17,21 @@ public class RepositorioDePaths {
         List<String> nombreDeLosPath = look.obtenerDatos();
         
         for(String nombreDelPath : nombreDeLosPath) {
-            Path path = new Path(pathRemoto, nombreDelPath);
-            
-            String direccionCompleta = pathRemoto + nombreDelPath;
-            
-            path.esEscribible(compruebaSiSePuedeEscribirEn(direccionCompleta, conexion));
-            path.esLegible(compruebaSiSePuedeLeerEn(direccionCompleta, conexion));
-            path.esUnaCarpeta(compruebaSiEsUnaCarpeta(direccionCompleta, conexion));
-            path.estaOculto(compruebaSiEstaOculto(direccionCompleta, conexion));
-            path.setPeso(obtieneElPeso(direccionCompleta, conexion));
-            path.ultimaModificacion(obtieneLaUltimaModificacion(direccionCompleta, conexion));
-            
-            paths.add(path);
+            paths.add(obtenerElPath(pathRemoto, nombreDelPath, conexion));
         }
         return paths;
+    }
+
+    public Path obtenerElPath(String pathRemoto, String nombreDelPath, Conexion conexion) {
+        Path path = new Path(pathRemoto, nombreDelPath);
+        String direccionCompleta = pathRemoto + nombreDelPath;
+        path.esEscribible(compruebaSiSePuedeEscribirEn(direccionCompleta, conexion));
+        path.esLegible(compruebaSiSePuedeLeerEn(direccionCompleta, conexion));
+        path.esUnaCarpeta(compruebaSiEsUnaCarpeta(direccionCompleta, conexion));
+        path.estaOculto(compruebaSiEstaOculto(direccionCompleta, conexion));
+        path.setPeso(obtieneElPeso(direccionCompleta, conexion));
+        path.ultimaModificacion(obtieneLaUltimaModificacion(direccionCompleta, conexion));
+        return path;
     }
 
     private boolean compruebaSiSePuedeEscribirEn(String direccionCompleta, Conexion conexion) {

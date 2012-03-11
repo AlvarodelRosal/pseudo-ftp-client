@@ -1,6 +1,8 @@
 package alvarodelrosal.ftp.ui;
 
 import alvarodelrosal.ftp.modelo.Path;
+import alvarodelrosal.ftp.modelo.RepositorioDePaths;
+import alvarodelrosal.ftp.ui.ventanas.VentanaPrincipal;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import javax.swing.table.TableModel;
@@ -10,11 +12,13 @@ public class TablaDeNavegacionDeArchivos extends ElementoDeVentana {
     private TablaConScroll tabla;
     private Path pathActual;
     private ModeloDeTablaDeArchivos modelo;
+    private VentanaPrincipal ventana;
 
-    public TablaDeNavegacionDeArchivos(TableModel modelo) {
+    public TablaDeNavegacionDeArchivos(TableModel modelo, VentanaPrincipal ventana) {
         this.modelo = (ModeloDeTablaDeArchivos) modelo;
         tabla = new TablaConScroll(modelo);
         tabla.agregarClickListenerALaTabla(new ListenerDeDobleClick());
+        this.ventana = ventana;
     }
 
     public TablaConScroll obtenerTabla() {
@@ -34,7 +38,8 @@ public class TablaDeNavegacionDeArchivos extends ElementoDeVentana {
     }
     
     public void irAlPath(Path path) {
-        this.pathActual = path;
+        RepositorioDePaths repositorio = new RepositorioDePaths();
+        this.pathActual = repositorio.obtenerElPath(path.verPathCompleto(), "", ventana.obtenerLaConexion());
         modelo.actualizar(path.verPathCompleto());
         tabla.ocultarMensaje();
     }

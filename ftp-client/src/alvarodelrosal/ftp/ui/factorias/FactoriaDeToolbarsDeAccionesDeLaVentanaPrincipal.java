@@ -40,7 +40,7 @@ public class FactoriaDeToolbarsDeAccionesDeLaVentanaPrincipal {
             crearCarpeta.agregarActionListener(new ActionListenerParaCrearCarpeta());
             elementos.add(crearCarpeta);
 
-            ElementoDeToolbar borrarCarpeta = new ElementoDeToolbar("Borrar carpeta", "eraser");
+            ElementoDeToolbar borrarCarpeta = new ElementoDeToolbar("Borrar", "eraser");
             borrarCarpeta.agregarActionListener(new ActionListenerParaBorrar());
             elementos.add(borrarCarpeta);
 
@@ -162,9 +162,8 @@ public class FactoriaDeToolbarsDeAccionesDeLaVentanaPrincipal {
             if (haySeleccionadaAlgunaFila()) {
                 ventanaDePropiedades.crear(ventana.pathSeleccionado());
             } else {
-                ventana.agregarMensajeDeError("Seleccione algún elemento para ver sus propiedades");
+                ventanaDePropiedades.crear(ventana.pathActual());
             }
-            ventanaDePropiedades.hacerVisible();
             ventanaDePropiedades.hacerVisible();
         }
 

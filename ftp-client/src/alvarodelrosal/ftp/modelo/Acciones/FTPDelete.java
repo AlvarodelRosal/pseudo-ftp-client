@@ -34,7 +34,7 @@ public class FTPDelete implements FTPAction {
 
     @Override
     public void ejecutar(List<String> parametros) {
-        String comando = "Delete<:@:>" + parametros.get(0) + "<:@:>" + parametros.get(1);
+        String comando = "Delete<:@:>" + parametros.get(0);
         conexion.escribir(comando);
         try {
             entrada = conexion.leer();
