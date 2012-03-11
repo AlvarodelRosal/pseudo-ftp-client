@@ -61,10 +61,17 @@ public class Path {
 
     public String verPathCompleto() {
         String direccion = path + nombre;
-        if (esUnaCarpeta) {
+        if (esUnaCarpeta){
             direccion += "/";
         }
+        if (acabaConDosBarrasLa(direccion)) {
+            direccion = direccion.substring(0,direccion.length() - 1);
+        }
         return direccion;
+    }
+
+    private boolean acabaConDosBarrasLa(String direccion) {
+        return direccion.endsWith("//");
     }
 
     public boolean esUnaCarpeta() {
