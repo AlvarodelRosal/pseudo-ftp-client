@@ -75,7 +75,7 @@ public class TablaDeNavegacionDeArchivos extends ElementoDeVentana {
         }
 
         private void mostrarCarpeta(Path pathObjetivo) {
-            irAlPath(pathObjetivo);
+            ventana.irAlPath(pathObjetivo.verPathCompleto());
             tabla.ocultarMensaje();
         }
         

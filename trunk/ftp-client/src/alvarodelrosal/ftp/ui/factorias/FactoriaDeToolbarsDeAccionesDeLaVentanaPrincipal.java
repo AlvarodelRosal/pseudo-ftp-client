@@ -90,19 +90,6 @@ public class FactoriaDeToolbarsDeAccionesDeLaVentanaPrincipal {
         }
     }
 
-    class ActionListenerParaSubirUnNivelEnElSistema implements ActionListener {
-
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            String pathActual = ventana.pathActual().verPathCompleto();
-            if (!"/".equals(pathActual)) {
-                String pathObjetivo = pathActual.substring(0, pathActual.length() - 1);
-                pathObjetivo = pathObjetivo.substring(0, pathObjetivo.lastIndexOf("/") + 1);
-                ventana.irAlPath(pathObjetivo);
-            }
-        }
-    }
-
     class ActionListenerParaCrearCarpeta implements ActionListener {
 
         @Override
@@ -147,6 +134,21 @@ public class FactoriaDeToolbarsDeAccionesDeLaVentanaPrincipal {
                     delete.ejecutar(parametros);
                     ventana.irAlPath(ventana.pathActual().verPathCompleto());
                 }
+            }
+        }
+    }
+    
+    
+
+    class ActionListenerParaSubirUnNivelEnElSistema implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            String pathActual = ventana.pathActual().verPathCompleto();
+            if (!"//".equals(pathActual)) {
+                String pathObjetivo = pathActual.substring(0, pathActual.length() - 2);
+                pathObjetivo = pathObjetivo.substring(0, pathObjetivo.lastIndexOf("/") + 1);
+                ventana.irAlPath(pathObjetivo);
             }
         }
     }

@@ -38,8 +38,8 @@ public class VentanaPrincipal extends Ventana {
         agregarTabla(new TablaDeNavegacionDeArchivos(
                 new ModeloDeTablaDeArchivos(new RepositorioDePaths(),
                 new Path("/", ""), conexion), this));
-        this.irAlPath("/");
         agregarStatusbar(new Statusbar());
+        this.irAlPath("/");
     }
     
     private void agregarToolbar(Toolbar toolbar) {
@@ -68,11 +68,12 @@ public class VentanaPrincipal extends Ventana {
         return conexion;
     }
     
-    public void generar() {
-        String contenidoDeStatusbar = " " + usuario.verNombre() + " ("
+    private String generarStatusBar() {
+        return " " + usuario.verNombre() + " ("
                 + usuario.verUsername() + ") - " + usuario.verNivel();
-        statusbar.cambiarTexto(contenidoDeStatusbar);
-        
+    }
+    
+    public void generar() {
         ventanaPrincipal.setVisible(false);
         ventanaPrincipal.setVisible(true);
     }
@@ -86,6 +87,7 @@ public class VentanaPrincipal extends Ventana {
     }
     
     public void irAlPath(String path) {
+        statusbar.cambiarTexto(generarStatusBar() + " @ " + path);
         Path pathObjetivo = new Path(path, "");
         tabla.irAlPath(pathObjetivo);
     }
