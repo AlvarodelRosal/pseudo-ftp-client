@@ -3,6 +3,7 @@ package alvarodelrosal.ftp.ui.factorias;
 import alvarodelrosal.ftp.modelo.Acciones.FTPBye;
 import alvarodelrosal.ftp.modelo.Acciones.FTPDelete;
 import alvarodelrosal.ftp.modelo.Acciones.FTPNewFolder;
+import alvarodelrosal.ftp.modelo.Acciones.FTPRead;
 import alvarodelrosal.ftp.modelo.Path;
 import alvarodelrosal.ftp.ui.ElementoDeToolbar;
 import alvarodelrosal.ftp.ui.Toolbar;
@@ -12,8 +13,11 @@ import alvarodelrosal.ftp.ui.ventanas.VentanaDeUsuarios;
 import alvarodelrosal.ftp.ui.ventanas.VentanaPrincipal;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class FactoriaDeToolbarsDeAccionesDeLaVentanaPrincipal {
 
@@ -51,6 +55,7 @@ public class FactoriaDeToolbarsDeAccionesDeLaVentanaPrincipal {
         elementos.add(subirArchivo);
 
         ElementoDeToolbar bajarArchivo = new ElementoDeToolbar("Bajar archivo", "download-cloud");
+        bajarArchivo.agregarActionListener(new ActionListenerParaBajarArchivo());
         elementos.add(bajarArchivo);
 
         elementos.add(separador);
@@ -137,8 +142,63 @@ public class FactoriaDeToolbarsDeAccionesDeLaVentanaPrincipal {
             }
         }
     }
-    
-    
+
+    class ActionListenerParaBajarArchivo implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent ae) {
+            Path elementoADescargar = ventana.pathSeleccionado();
+
+            if (elementoADescargar.esUnaCarpeta()) {
+                ventana.agregarMensajeDeError("Por favor, seleccione un archivo para descargar");
+            } else if (!elementoADescargar.esLegible()) {
+                ventana.agregarMensajeDeError("El archivo seleccionado no se puede leer");
+            } else {
+                File destino = null;
+                try {
+                    destino = Dialogo.pintarMensajeDeGuardar();
+                } catch (IOException ex) {
+                    Logger.getLogger(FactoriaDeToolbarsDeAccionesDeLaVentanaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                FileOutputStream escritor = null;
+
+                if (hayLugarSeleccionado(destino)) {
+
+                    if (destino.canWrite() && destino.isFile()) {
+                        try {
+                            escritor = new FileOutputStream(destino);
+                        } catch (FileNotFoundException ex) {
+                            ex.printStackTrace();
+                        }
+
+                        long numeroDePartes = elementoADescargar.verNumeroDeBytes() / 1000;
+                        FTPRead lectura = new FTPRead(ventana.obtenerLaConexion());
+
+                        for (int parte = 0; parte <= numeroDePartes; parte++) {
+                            List<String> parametros = new ArrayList();
+                            parametros.add(elementoADescargar.verPathCompleto());
+                            parametros.add(String.valueOf(parte));
+                            lectura.ejecutar(parametros);
+
+                            String lecturaDelArchivo = lectura.obtenerDatos().get(0);
+                            byte[] bytesDelArchivo = lecturaDelArchivo.getBytes();
+                            try {
+                                escritor.write(bytesDelArchivo);
+                            } catch (IOException ex) {
+                            }
+                        }
+                    } else {
+                        ventana.agregarMensajeDeError("No se puede escribir en el directorio elegido");
+                    }
+                }
+            }
+
+        }
+
+        private boolean hayLugarSeleccionado(File destino) {
+            return destino != null;
+        }
+    }
 
     class ActionListenerParaSubirUnNivelEnElSistema implements ActionListener {
 
