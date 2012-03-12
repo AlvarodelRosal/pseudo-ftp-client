@@ -24,14 +24,17 @@ public class FTPRead implements FTPAction {
 
     @Override
     public List<String> obtenerDatos() {
-        ArrayList elemento = new ArrayList();
-        elemento.add(entrada);
+        List<String> elemento = new ArrayList();
+        String [] intDelFichero = entrada.split("<:@:>");
+        for (String parteDelFichero : intDelFichero) {
+            elemento.add(parteDelFichero);
+        } 
         return elemento;
     }
 
     @Override
     public void ejecutar(List<String> parametros) {
-        String comando = "Read<:@:>" + parametros.get(0) + "<:@:>" + parametros.get(1);
+        String comando = "Read<:@:>" + parametros.get(0);
         conexion.escribir(comando);
         try {
             entrada = conexion.leer();

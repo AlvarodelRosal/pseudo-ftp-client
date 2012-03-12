@@ -171,28 +171,25 @@ public class FactoriaDeToolbarsDeAccionesDeLaVentanaPrincipal {
                             ex.printStackTrace();
                         }
 
-                        long numeroDePartes = elementoADescargar.verNumeroDeBytes() / 1000;
                         FTPRead lectura = new FTPRead(ventana.obtenerLaConexion());
 
-                        for (int parte = 0; parte <= numeroDePartes; parte++) {
-                            List<String> parametros = new ArrayList();
-                            parametros.add(elementoADescargar.verPathCompleto());
-                            parametros.add(String.valueOf(parte));
-                            lectura.ejecutar(parametros);
+                        List<String> parametros = new ArrayList();
+                        parametros.add(elementoADescargar.verPathCompleto());
+                        lectura.ejecutar(parametros);
 
-                            String lecturaDelArchivo = lectura.obtenerDatos().get(0);
-                            byte[] bytesDelArchivo = lecturaDelArchivo.getBytes();
+                        List<String> resultado = lectura.obtenerDatos();
+
+                        for (String byteLeido : resultado) {
                             try {
-                                escritor.write(bytesDelArchivo);
+                                escritor.write(Integer.parseInt(byteLeido));
                             } catch (IOException ex) {
                             }
                         }
-                    } else {
-                        ventana.agregarMensajeDeError("No se puede escribir en el directorio elegido");
                     }
+                } else {
+                    ventana.agregarMensajeDeError("No se puede escribir en el directorio elegido");
                 }
             }
-
         }
 
         private boolean hayLugarSeleccionado(File destino) {
@@ -205,8 +202,8 @@ public class FactoriaDeToolbarsDeAccionesDeLaVentanaPrincipal {
         @Override
         public void actionPerformed(ActionEvent e) {
             String pathActual = ventana.pathActual().verPathCompleto();
-            if (!"//".equals(pathActual)) {
-                String pathObjetivo = pathActual.substring(0, pathActual.length() - 2);
+            if (!"/".equals(pathActual)) {
+                String pathObjetivo = pathActual.substring(0, pathActual.length() - 1);
                 pathObjetivo = pathObjetivo.substring(0, pathObjetivo.lastIndexOf("/") + 1);
                 ventana.irAlPath(pathObjetivo);
             }
