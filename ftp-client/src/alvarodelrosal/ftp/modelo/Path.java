@@ -41,6 +41,10 @@ public class Path {
     public void setPeso(long peso) {
         this.peso = peso;
     }
+    
+    public long verNumeroDeBytes() {
+        return peso;
+    }
 
     public void ultimaModificacion(long ultimaModificacion) {
         Date fecha = new Date(ultimaModificacion);
