@@ -1,9 +1,6 @@
 package alvarodelrosal.ftp.ui.factorias;
 
-import alvarodelrosal.ftp.modelo.Acciones.FTPBye;
-import alvarodelrosal.ftp.modelo.Acciones.FTPDelete;
-import alvarodelrosal.ftp.modelo.Acciones.FTPNewFolder;
-import alvarodelrosal.ftp.modelo.Acciones.FTPRead;
+import alvarodelrosal.ftp.modelo.Acciones.*;
 import alvarodelrosal.ftp.modelo.Path;
 import alvarodelrosal.ftp.ui.ElementoDeToolbar;
 import alvarodelrosal.ftp.ui.Toolbar;
@@ -11,6 +8,7 @@ import alvarodelrosal.ftp.ui.ventanas.Dialogo;
 import alvarodelrosal.ftp.ui.ventanas.VentanaDePropiedades;
 import alvarodelrosal.ftp.ui.ventanas.VentanaDeUsuarios;
 import alvarodelrosal.ftp.ui.ventanas.VentanaPrincipal;
+import java.awt.Dialog;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.*;
@@ -52,6 +50,7 @@ public class FactoriaDeToolbarsDeAccionesDeLaVentanaPrincipal {
         }
 
         ElementoDeToolbar subirArchivo = new ElementoDeToolbar("Subir archivo", "upload-cloud");
+        subirArchivo.agregarActionListener(new ActionListenerParaSubirArchivo());
         elementos.add(subirArchivo);
 
         ElementoDeToolbar bajarArchivo = new ElementoDeToolbar("Bajar archivo", "download-cloud");
@@ -143,6 +142,56 @@ public class FactoriaDeToolbarsDeAccionesDeLaVentanaPrincipal {
         }
     }
 
+    class ActionListenerParaSubirArchivo implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent ae) {
+
+            File elementoASubir = Dialogo.pintarMensajeDeAbrir();
+            if (elementoASubir == null) {
+                ventana.agregarMensajeDeError("No se puede acceder al archivo seleccionado");
+            } else {
+                String nombreDelArchivo = generaElNombreDelArchivo(elementoASubir);
+                FileInputStream fileReader = null;
+
+                try {
+                    fileReader = new FileInputStream(elementoASubir);
+                    
+                    List<String> partes = new ArrayList();
+                    partes.add(ventana.pathActual().verPathCompleto() + nombreDelArchivo);
+                    
+                    int filePart;
+
+                    while ((filePart = fileReader.read()) != -1) {
+                        partes.add(String.valueOf(filePart));
+                    }
+                    if(ventana.obtenerElUsuario().esAdmin()) {
+                        FTPWrite escritor = new FTPWrite(ventana.obtenerLaConexion());
+                        escritor.ejecutar(partes);
+                    } else {
+                        
+                    }
+                    ventana.irAlPath(ventana.pathActual().verPathCompleto());
+                    
+                } catch (IOException ex) {
+                    Logger.getLogger(FTPRead.class.getName()).log(Level.SEVERE, null, ex);
+                } finally {
+                    try {
+                        fileReader.close();
+                    } catch (IOException ex) {
+                    }
+                }
+
+            }
+
+        }
+
+        private String generaElNombreDelArchivo(File elementoASubir) {
+            String nombreDelArchivo = elementoASubir.getAbsolutePath();
+            return nombreDelArchivo.substring(nombreDelArchivo.lastIndexOf("/"));
+        }
+    }
+
     class ActionListenerParaBajarArchivo implements ActionListener {
 
         @Override
@@ -154,12 +203,7 @@ public class FactoriaDeToolbarsDeAccionesDeLaVentanaPrincipal {
             } else if (!elementoADescargar.esLegible()) {
                 ventana.agregarMensajeDeError("El archivo seleccionado no se puede leer");
             } else {
-                File destino = null;
-                try {
-                    destino = Dialogo.pintarMensajeDeGuardar();
-                } catch (IOException ex) {
-                    Logger.getLogger(FactoriaDeToolbarsDeAccionesDeLaVentanaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
-                }
+                File destino = destino = Dialogo.pintarMensajeDeGuardar();
                 FileOutputStream escritor = null;
 
                 if (hayLugarSeleccionado(destino)) {

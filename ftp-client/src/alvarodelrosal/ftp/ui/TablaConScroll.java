@@ -23,7 +23,7 @@ public class TablaConScroll {
 
         contenedorDeTabla = new JPanel(new BorderLayout());
 
-        contenedorDeTabla.add(tabla, BorderLayout.CENTER);
+        contenedorDeTabla.add(panelDeScroll, BorderLayout.CENTER);
         contenedorDeTabla.add(mensajes, BorderLayout.NORTH);
         mensajes.setVisible(false);
 

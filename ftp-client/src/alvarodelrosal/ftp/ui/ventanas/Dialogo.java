@@ -2,6 +2,8 @@ package alvarodelrosal.ftp.ui.ventanas;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
@@ -22,7 +24,7 @@ public class Dialogo {
                 JOptionPane.QUESTION_MESSAGE, null, respuestas, respuestas[0]);
     }
 
-    public static File pintarMensajeDeGuardar() throws IOException {
+    public static File pintarMensajeDeGuardar() {
         JFileChooser ventana = new JFileChooser();
         int respuestaDeBoton = ventana.showSaveDialog(null);
 
@@ -33,12 +35,40 @@ public class Dialogo {
                         "El archivo seleccionado existe. ¿Desea reemplazarlo?");
                 if (respuesta == 0) {
                     elementoSeleccionado.delete();
-                    elementoSeleccionado.createNewFile();
+                    try {
+                        elementoSeleccionado.createNewFile();
+                    } catch (IOException ex) {
+                        Dialogo.pintarMensajeDeError("Error de escriture",
+                                "No se ha podido crear el archivo solicitado");
+                    }
                     return elementoSeleccionado;
                 }
                 return null;
             } else {
-                elementoSeleccionado.createNewFile();
+                try {
+                        elementoSeleccionado.createNewFile();
+                    } catch (IOException ex) {
+                        Dialogo.pintarMensajeDeError("Error de escriture",
+                                "No se ha podido crear el archivo solicitado");
+                    }
+                return elementoSeleccionado;
+            }
+        } else {
+            return null;
+        }
+    }
+
+    public static File pintarMensajeDeAbrir() {
+        JFileChooser ventana = new JFileChooser();
+        int respuestaDeBoton = ventana.showOpenDialog(null);
+
+        if (respuestaDeBoton == JFileChooser.APPROVE_OPTION) {
+            File elementoSeleccionado = ventana.getSelectedFile();
+            if (!elementoSeleccionado.canRead()) {
+                pintarMensajeDeError("Error de lectura",
+                        "El archivo seleccionado no tiene permisos de lectura");
+                return null;
+            } else {
                 return elementoSeleccionado;
             }
         } else {
