@@ -8,7 +8,6 @@ import alvarodelrosal.ftp.ui.ventanas.Dialogo;
 import alvarodelrosal.ftp.ui.ventanas.VentanaDePropiedades;
 import alvarodelrosal.ftp.ui.ventanas.VentanaDeUsuarios;
 import alvarodelrosal.ftp.ui.ventanas.VentanaPrincipal;
-import java.awt.Dialog;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.*;
@@ -156,23 +155,24 @@ public class FactoriaDeToolbarsDeAccionesDeLaVentanaPrincipal {
 
                 try {
                     fileReader = new FileInputStream(elementoASubir);
-                    
-                    List<String> partes = new ArrayList();
-                    partes.add(ventana.pathActual().verPathCompleto() + nombreDelArchivo);
-                    
-                    int filePart;
 
-                    while ((filePart = fileReader.read()) != -1) {
-                        partes.add(String.valueOf(filePart));
-                    }
-                    if(ventana.obtenerElUsuario().esAdmin()) {
+                    List<String> partes = new ArrayList();
+
+                    if (ventana.obtenerElUsuario().esAdmin()) {
+                        partes.add(ventana.pathActual().verPathCompleto() + nombreDelArchivo);
+                        leerArchivo(fileReader, partes);
+
                         FTPWrite escritor = new FTPWrite(ventana.obtenerLaConexion());
                         escritor.ejecutar(partes);
                     } else {
+                        partes.add(nombreDelArchivo);
+                        leerArchivo(fileReader, partes);
                         
+                        FTPNotAdminWrite escritor = new FTPNotAdminWrite(ventana.obtenerLaConexion());
+                        escritor.ejecutar(partes);
                     }
                     ventana.irAlPath(ventana.pathActual().verPathCompleto());
-                    
+
                 } catch (IOException ex) {
                     Logger.getLogger(FTPRead.class.getName()).log(Level.SEVERE, null, ex);
                 } finally {
@@ -186,9 +186,22 @@ public class FactoriaDeToolbarsDeAccionesDeLaVentanaPrincipal {
 
         }
 
+        private void leerArchivo(FileInputStream fileReader, List<String> partes) throws IOException {
+            int filePart;
+            while ((filePart = fileReader.read()) != -1) {
+                partes.add(String.valueOf(filePart));
+            }
+        }
+
         private String generaElNombreDelArchivo(File elementoASubir) {
             String nombreDelArchivo = elementoASubir.getAbsolutePath();
-            return nombreDelArchivo.substring(nombreDelArchivo.lastIndexOf("/"));
+            if(nombreDelArchivo.contains("/")) {
+                return nombreDelArchivo.substring(nombreDelArchivo.lastIndexOf("/") + 1);
+            } else if (nombreDelArchivo.contains("\\")) {
+                return nombreDelArchivo.substring(nombreDelArchivo.lastIndexOf("\\") + 1);
+            } else {
+                return nombreDelArchivo;
+            }
         }
     }
 
