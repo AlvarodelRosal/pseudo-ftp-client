@@ -33,7 +33,7 @@ public class VentanaDeLogin extends Ventana {
             JLabel etiquetaUsuario = crearEtiqueta("Nombre de usuario:", 0);
             ventanaDeLogin.add(etiquetaUsuario);
             campoUsuario = crearCampo(0);
-            campoUsuario.setText("adr");
+            campoUsuario.setText("user");
             ventanaDeLogin.add(campoUsuario);
 
             JLabel etiquetaClave = crearEtiqueta("Contraseña:", 1);
@@ -45,7 +45,7 @@ public class VentanaDeLogin extends Ventana {
             JLabel etiquetaHost = crearEtiqueta("Host:", 2);
             ventanaDeLogin.add(etiquetaHost);
             campoHost = crearCampo(2);
-            campoHost.setText("192.168.2.106");
+            campoHost.setText("localhost");
             ventanaDeLogin.add(campoHost);
 
             JLabel etiquetaPuerto = crearEtiqueta("Puerto:", 3);
