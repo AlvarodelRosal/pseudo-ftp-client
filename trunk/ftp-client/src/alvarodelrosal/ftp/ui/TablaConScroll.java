@@ -7,6 +7,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.table.TableCellRenderer;
+import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
 
 public class TablaConScroll {
@@ -28,6 +30,11 @@ public class TablaConScroll {
         mensajes.setVisible(false);
 
         tabla.setAutoResizeMode(JTable.AUTO_RESIZE_NEXT_COLUMN);
+    }
+    
+    public void agregarRender(int columna, TableCellRenderer render) {
+        TableColumnModel tablaColumnModel = tabla.getColumnModel();
+        tablaColumnModel.getColumn(columna).setCellRenderer(render);
     }
 
     public JPanel obtenerLaTablaConScroll() {
