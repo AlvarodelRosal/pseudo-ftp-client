@@ -5,10 +5,7 @@ import alvarodelrosal.ftp.modelo.Conexion;
 import alvarodelrosal.ftp.modelo.Path;
 import alvarodelrosal.ftp.modelo.RepositorioDePaths;
 import alvarodelrosal.ftp.modelo.Usuario;
-import alvarodelrosal.ftp.ui.ModeloDeTablaDeArchivos;
-import alvarodelrosal.ftp.ui.Statusbar;
-import alvarodelrosal.ftp.ui.TablaDeNavegacionDeArchivos;
-import alvarodelrosal.ftp.ui.Toolbar;
+import alvarodelrosal.ftp.ui.*;
 import alvarodelrosal.ftp.ui.factorias.FactoriaDeToolbarsDeAccionesDeLaVentanaPrincipal;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -37,7 +34,7 @@ public class VentanaPrincipal extends Ventana {
         agregarToolbar(new FactoriaDeToolbarsDeAccionesDeLaVentanaPrincipal(this).obtener());
         agregarTabla(new TablaDeNavegacionDeArchivos(
                 new ModeloDeTablaDeArchivos(new RepositorioDePaths(),
-                new Path("/", ""), conexion), this));
+                new Path("/", ""), conexion), new RenderDeNombreDeArchivo(), this));
         agregarStatusbar(new Statusbar());
         this.irAlPath("/");
     }

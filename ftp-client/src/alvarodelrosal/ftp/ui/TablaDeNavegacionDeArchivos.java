@@ -5,6 +5,7 @@ import alvarodelrosal.ftp.modelo.RepositorioDePaths;
 import alvarodelrosal.ftp.ui.ventanas.VentanaPrincipal;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableModel;
 
 public class TablaDeNavegacionDeArchivos extends ElementoDeVentana {
@@ -14,10 +15,12 @@ public class TablaDeNavegacionDeArchivos extends ElementoDeVentana {
     private ModeloDeTablaDeArchivos modelo;
     private VentanaPrincipal ventana;
 
-    public TablaDeNavegacionDeArchivos(TableModel modelo, VentanaPrincipal ventana) {
+    public TablaDeNavegacionDeArchivos(TableModel modelo, TableCellRenderer render,
+            VentanaPrincipal ventana) {
         this.modelo = (ModeloDeTablaDeArchivos) modelo;
         tabla = new TablaConScroll(modelo);
         tabla.agregarClickListenerALaTabla(new ListenerDeDobleClick());
+        tabla.agregarRender(0, render);
         this.ventana = ventana;
     }
 
