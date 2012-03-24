@@ -1,7 +1,7 @@
 package alvarodelrosal.ftp.modelo.Acciones;
 
-import alvarodelrosal.ftp.modelo.FTPAction;
 import alvarodelrosal.ftp.modelo.Conexion;
+import alvarodelrosal.ftp.modelo.FTPAction;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;

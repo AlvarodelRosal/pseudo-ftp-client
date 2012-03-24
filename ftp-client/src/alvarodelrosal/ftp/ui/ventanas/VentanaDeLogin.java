@@ -33,19 +33,16 @@ public class VentanaDeLogin extends Ventana {
             JLabel etiquetaUsuario = crearEtiqueta("Nombre de usuario:", 0);
             ventanaDeLogin.add(etiquetaUsuario);
             campoUsuario = crearCampo(0);
-            campoUsuario.setText("user");
             ventanaDeLogin.add(campoUsuario);
 
             JLabel etiquetaClave = crearEtiqueta("Contraseña:", 1);
             ventanaDeLogin.add(etiquetaClave);
             campoClave = crearCampoClave(1);
-            campoClave.setText("123456");
             ventanaDeLogin.add(campoClave);
 
             JLabel etiquetaHost = crearEtiqueta("Host:", 2);
             ventanaDeLogin.add(etiquetaHost);
             campoHost = crearCampo(2);
-            campoHost.setText("localhost");
             ventanaDeLogin.add(campoHost);
 
             JLabel etiquetaPuerto = crearEtiqueta("Puerto:", 3);
