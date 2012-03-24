@@ -1,7 +1,6 @@
 package alvarodelrosal.ftp.ui;
 
 import alvarodelrosal.ftp.modelo.Conexion;
-import alvarodelrosal.ftp.modelo.Path;
 import alvarodelrosal.ftp.modelo.RepositorioDeUsuarios;
 import alvarodelrosal.ftp.modelo.Usuario;
 import java.util.List;
